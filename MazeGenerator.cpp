@@ -181,7 +181,7 @@ void MazeGenerator::generate_teleports(vector<string>& maze)
         maze[teleport_pos2][maze[0].size() - 1] = teleportChar;
     }
 
-    teleports[2] = Vector2i(teleport_pos, 1);
+    teleports[2] = Vector2i(teleport_pos, 0);
     teleports[3] = Vector2i(teleport_pos, maze.size()-1);
     teleports[0] = Vector2i(0, teleport_pos2);
     teleports[1] = Vector2i(maze[0].size()-1, teleport_pos2);
