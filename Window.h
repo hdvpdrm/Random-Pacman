@@ -17,6 +17,8 @@ class Window
 	View* view;
 	Pacman* man;
 	Clock* clock;
+	Font font;
+	Text high_score,score_value;
 
 	const int win_height = 580;
 	const int win_width = 1280;
@@ -26,6 +28,7 @@ class Window
 	
 	void draw_maze();
 	void draw_man();
+	void draw_score();
 
 	bool is_pressed = false;
 	vector<string> split(const string& str);

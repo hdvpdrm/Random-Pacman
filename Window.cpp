@@ -12,6 +12,13 @@ Render::Window::Window()
 
     man = new Pacman(maze);
 
+    font.loadFromFile("Phased.ttf");
+    high_score.setFont(font);
+    high_score.setCharacterSize(56);
+    high_score.setString("High Score:");
+    score_value.setFont(font);
+    score_value.setCharacterSize(52);
+
 }
 Render::Window::~Window()
 {
@@ -38,6 +45,7 @@ void Render::Window::run()
         win->clear();
         draw_maze();
         draw_man();
+        draw_score();
         win->display();
     }
 }
@@ -89,6 +97,15 @@ void Render::Window::draw_man()
 {
     win->draw(*man->get_body_to_draw());
 }
+void Render::Window::draw_score()
+{
+    score_value.setString(to_string(man->get_score()));
+    score_value.setPosition(10.0f, -240.0f);
+    high_score.setPosition(10.0f, -300.0f);
+    win->draw(high_score);
+    win->draw(score_value);
+}
+
 vector<string> Render::Window::split(const string& str)
 {
     vector<string> lines;
