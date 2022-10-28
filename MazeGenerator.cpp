@@ -94,7 +94,7 @@ void MazeGenerator::generate()
     recursion(r, c);
 }
 
-string  MazeGenerator::get_maze()
+vector<string>  MazeGenerator::get_maze()
 {
     generate();
 
@@ -136,5 +136,19 @@ string  MazeGenerator::get_maze()
         m += '\n';
     }
 
-    return m;
+    auto splitted = split(m);
+
+    return splitted;
+}
+vector<string> MazeGenerator::split(const string& str)
+{
+    vector<string> lines;
+    stringstream streamData(str);
+
+    string val;
+    while (std::getline(streamData, val, '\n'))
+    {
+        lines.push_back(val);
+    }
+    return lines;
 }

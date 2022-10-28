@@ -1,6 +1,5 @@
 #ifndef WINDOW_H
 #define WINDOW_H
-#include <sstream>
 #include"SFML/Graphics.hpp"
 #include"Pacman.h"
 #include"GhostWalker.h"
@@ -39,7 +38,7 @@ class Window
 	void process_ghosts();
 
 	bool is_pressed = false;
-	vector<string> split(const string& str);
+	
 public:
 	Window();
 	~Window();

@@ -1,8 +1,8 @@
 #ifndef MAZE_GENERATOR_H
 #define MAZE_GENERATOR_H
 #include<vector>
-#include<iostream>
 #include<string>
+#include <sstream>
 #include"rand.h"
 using namespace std;
 
@@ -17,11 +17,12 @@ public:
 	static const short pelletChar = 1;
 	static const short wumpaChar = 2;
 	static const short openChar = 3;
+	static const short teleportChar = 4;
 private:
 	void shuffle(int* arr, int size);
 	void recursion(int r, int c);
 	void generate();
-
+	vector<string> split(const string& str);
 public:
 	MazeGenerator()
 	{
@@ -38,7 +39,7 @@ public:
 		delete[] maze;
 	}
 
-	string get_maze();
+	vector<string> get_maze();
 
 };
 #endif MAZE_GENERATOR_H

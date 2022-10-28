@@ -8,7 +8,7 @@ Render::Window::Window()
     view->setCenter(view_center_x, view_center_y);
     view->setSize(win_width, win_height);
     view->zoom(2.0f);
-    maze = split(maze_gen.get_maze());
+    maze = maze_gen.get_maze();
 
     man = new Pacman(maze);
 
@@ -40,9 +40,14 @@ Render::Window::~Window()
 }
 void Render::Window::process_ghosts()
 {
-    for (int i = 0;i<2;i++)
+    for (int i = 0; i < 2; i++)
     {
         walkers[i]->run(maze, walkers_clocks[i]);
+        if (walkers[i]->does_intersects_pacman(man->get_position()))
+        {
+            man->get_back_to_start();
+            man->decrease_health();
+        }
     }
 }
 void Render::Window::run()
@@ -132,16 +137,4 @@ void Render::Window::draw_ghosts()
     {
         win->draw(*walker->get_body());
     }
-}
-vector<string> Render::Window::split(const string& str)
-{
-    vector<string> lines;
-    stringstream streamData(str);
-
-    string val;
-    while (std::getline(streamData, val, '\n')) 
-    {
-        lines.push_back(val);
-    }
-    return lines;
 }
