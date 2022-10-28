@@ -16,6 +16,7 @@ public:
 	static const short mazeChar = 0;
 	static const short pelletChar = 1;
 	static const short wumpaChar = 2;
+	static const short openChar = 3;
 private:
 	void shuffle(int* arr, int size);
 	void recursion(int r, int c);
