@@ -98,3 +98,7 @@ void GhostWalker::run(vector<string>& maze, Clock* clock)
 		}
 	}
 }
+bool GhostWalker::does_intersects_pacman(const Vector2f& man_pos)
+{
+	return get_pos_at_maze(man_pos) == get_pos_at_maze(body->getPosition());
+}

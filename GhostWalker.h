@@ -14,6 +14,7 @@ public:
 
 	const RectangleShape* get_body()const { return body; };
 	void run(vector<string>& maze, Clock* clock);
+	bool does_intersects_pacman(const Vector2f& man_pos);
 };
 #endif GHOST_WALKER_H
 
