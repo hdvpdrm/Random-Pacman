@@ -3,6 +3,7 @@
 #include <sstream>
 #include"SFML/Graphics.hpp"
 #include"Pacman.h"
+#include"GhostWalker.h"
 using namespace sf;
 
 //use namespace to avoid problem with compilation
@@ -16,6 +17,10 @@ class Window
 	RenderWindow* win;
 	View* view;
 	Pacman* man;
+
+	vector<Clock*> walkers_clocks;
+	vector<GhostWalker*> walkers;
+
 	Clock* clock;
 	Font font;
 	Text high_score,score_value;
@@ -28,7 +33,10 @@ class Window
 	
 	void draw_maze();
 	void draw_man();
+	void draw_ghosts();
 	void draw_score();
+
+	void process_ghosts();
 
 	bool is_pressed = false;
 	vector<string> split(const string& str);

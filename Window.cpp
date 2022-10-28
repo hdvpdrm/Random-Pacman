@@ -2,10 +2,10 @@
 
 Render::Window::Window()
 {
-	win = new RenderWindow(VideoMode(win_width, win_height), "pacman");
+    win = new RenderWindow(VideoMode(win_width, win_height), "pacman");
     win->setFramerateLimit(40);
     view = new View();
-    view->setCenter(view_center_x,view_center_y);
+    view->setCenter(view_center_x, view_center_y);
     view->setSize(win_width, win_height);
     view->zoom(2.0f);
     maze = split(maze_gen.get_maze());
@@ -19,6 +19,17 @@ Render::Window::Window()
     score_value.setFont(font);
     score_value.setCharacterSize(52);
 
+    for (int i = 0; i < 2; i++)
+    {
+        GhostWalker* walker = new GhostWalker(maze);
+        walkers.push_back(walker);
+    }
+    for (int i = 0; i < 2; i++)
+    {
+        Clock* clock = new Clock();
+        walkers_clocks.push_back(clock);
+    }
+
 }
 Render::Window::~Window()
 {
@@ -26,6 +37,13 @@ Render::Window::~Window()
     delete view;
     delete man;
     delete clock;
+}
+void Render::Window::process_ghosts()
+{
+    for (int i = 0;i<2;i++)
+    {
+        walkers[i]->run(maze, walkers_clocks[i]);
+    }
 }
 void Render::Window::run()
 {
@@ -41,11 +59,14 @@ void Render::Window::run()
         man->process_key();
         man->run(maze,clock);
 
+        process_ghosts();
+
         win->setView(*view);
         win->clear();
         draw_maze();
         draw_man();
         draw_score();
+        draw_ghosts();
         win->display();
     }
 }
@@ -105,7 +126,13 @@ void Render::Window::draw_score()
     win->draw(high_score);
     win->draw(score_value);
 }
-
+void Render::Window::draw_ghosts()
+{
+    for (auto& walker : walkers)
+    {
+        win->draw(*walker->get_body());
+    }
+}
 vector<string> Render::Window::split(const string& str)
 {
     vector<string> lines;
