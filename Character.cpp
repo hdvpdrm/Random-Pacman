@@ -31,3 +31,31 @@ Vector2i Character::get_random_pos(const vector<string>& maze)
 	random_vec.y *= elem_size;
 	return random_vec;
 }
+Vector2f Character::move(const Vector2f& old_pos,Dir dir)
+{
+	auto new_pos = old_pos;
+	switch (dir)
+	{
+	case Dir::Down:
+	{
+		new_pos.y += movement_offset;
+	}
+	break;
+	case Dir::Up:
+	{
+		new_pos.y += -movement_offset;
+	}
+	break;
+	case Dir::Left:
+	{
+		new_pos.x += -movement_offset;
+	}
+	break;
+	case Dir::Right:
+	{
+		new_pos.x += movement_offset;
+	}
+	break;
+	};
+	return new_pos;
+}

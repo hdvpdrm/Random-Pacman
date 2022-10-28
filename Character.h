@@ -11,6 +11,7 @@ class Character
 {
 protected:
 	const float movement_offset;
+	const float y_offset = 2.0f;
 	enum class Dir
 	{
 		Left, Right, Down, Up
@@ -23,6 +24,7 @@ protected:
 	Vector2i get_pos_at_maze(const Vector2f& man_new_pos);
 	bool can_move(const vector<string>& maze, const Vector2f& new_pos);
 	Vector2i get_random_pos(const vector<string>& maze);
+	Vector2f move(const Vector2f& old_pos, Dir dir);
 };
 #endif
 
