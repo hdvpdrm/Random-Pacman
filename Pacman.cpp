@@ -3,7 +3,8 @@
 Pacman::Pacman(const vector<string>& maze):Character(32.0f)
 {
 	pos = get_random_pos(maze);
-	pos.y += offset.y;
+	pos.y += y_offset;
+	start_pos = Vector2f(pos);
 	body = new CircleShape(body_radius);
 	body->setFillColor(Color::Yellow);
 	body->setPosition(Vector2f(pos));
@@ -16,30 +17,7 @@ Pacman::~Pacman()
 }
 void Pacman::run(vector<string>& maze,Clock* clock)
 {
-	auto new_pos = body->getPosition();
-	switch (curr_dir)
-	{
-	case Dir::Down:
-	{
-		new_pos.y += movement_offset;
-	}
-	break;
-	case Dir::Up:
-	{
-		new_pos.y += -movement_offset;
-	}
-	break;
-	case Dir::Left:
-	{
-		new_pos.x += -movement_offset;
-	}
-	break;
-	case Dir::Right:
-	{
-		new_pos.x += movement_offset;
-	}
-	break;
-	};
+	auto new_pos = move(body->getPosition(),curr_dir);
 
 	auto time = clock->getElapsedTime().asSeconds();
 	if (can_move(maze, new_pos) and time > 0.2f)

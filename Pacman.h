@@ -7,10 +7,10 @@
 class Pacman:Character
 {
 	Vector2i pos;
+	Vector2f start_pos;
 	CircleShape* body;
 
 	const float body_radius = 16.0f;
-	const Vector2f offset = Vector2f(16.0f, 0.0f);
 
 	int score = 0;
 	int health = 3;
@@ -20,9 +20,20 @@ public:
 	Pacman(const vector<string>& maze);
 	~Pacman();
 
-	CircleShape* get_body_to_draw()const { return body; };
+	const CircleShape* get_body_to_draw()const { return body; };
+	Vector2f get_position()const { return body->getPosition(); };
+	Vector2f get_start_position()const { return start_pos; };
 	void run(vector<string>& maze,Clock* clock);
 	void process_key();
+	void decrease_health() { health--; };
+	int get_health() { return health; }
+	void get_back_to_start()
+	{
+		body->setPosition(start_pos);
+		curr_dir = (Dir)PacmanRand::rand(0, 3);
+	}
+
+	int get_score()const { return score; }
 
 };
 #endif PACMAN_H
