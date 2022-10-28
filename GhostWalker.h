@@ -7,7 +7,7 @@ class GhostWalker:public Character
 {
 private:
 	RectangleShape* body;
-	void generate_random_dir();
+	void generate_random_dir(const vector<string>& maze);
 public:
 	GhostWalker(const vector<string>& maze);
 	~GhostWalker();

@@ -2,18 +2,29 @@
 
 GhostWalker::GhostWalker(const vector<string>& maze):Character(32.0f)
 {
-	generate_random_dir();
-
 	body = new RectangleShape;
 	body->setFillColor(Color::Magenta);
 	body->setSize(Vector2f(32.0f, 32.0f));
 
 	auto pos = get_random_pos(maze);
 	body->setPosition(Vector2f(pos));
+	generate_random_dir(maze);
 }
-void GhostWalker::generate_random_dir()
+void GhostWalker::generate_random_dir(const vector<string>& maze)
 {
-	curr_dir = (Dir)PacmanRand::rand(0, 3);
+	vector<Dir> dirs;
+	if (can_move(maze, move(body->getPosition(), Dir::Up)))
+		dirs.push_back(Dir::Up);
+	if (can_move(maze, move(body->getPosition(), Dir::Down)))
+		dirs.push_back(Dir::Down);
+	if (can_move(maze, move(body->getPosition(), Dir::Left)))
+		dirs.push_back(Dir::Left);
+	if (can_move(maze, move(body->getPosition(), Dir::Right)))
+		dirs.push_back(Dir::Right);
+
+	int random_id = PacmanRand::rand(0, dirs.size()-1);
+	curr_dir = dirs[random_id];
+
 }
 GhostWalker::~GhostWalker()
 {
@@ -22,9 +33,15 @@ GhostWalker::~GhostWalker()
 void GhostWalker::run(vector<string>& maze, Clock* clock)
 {
 	auto new_pos = move(body->getPosition(),curr_dir);
+	
 	if (!can_move(maze, new_pos))
 	{
-		generate_random_dir();
+		//generate_random_dir();
+		if (curr_dir == Dir::Left)curr_dir = Dir::Right;
+		else if (curr_dir == Dir::Right)curr_dir = Dir::Left;
+		else if (curr_dir == Dir::Up)curr_dir = Dir::Down;
+		else if (curr_dir == Dir::Down)curr_dir = Dir::Up;
+
 	}
 	else
 	{
