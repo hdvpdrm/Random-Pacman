@@ -17,9 +17,9 @@ class Window
 	View* view;
 
 	const int win_height = 580;
-	const int win_width = 720;
-	const float view_center_x = 1240.0f;
-	const float view_center_y = 290.0f;
+	const int win_width = 1280;
+	const float view_center_x = 1200.0f;
+	const float view_center_y = 220.0f;
 	const float element_size = 32.0f;
 	
 	void draw_maze();
