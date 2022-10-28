@@ -102,47 +102,47 @@ int MazeGenerator::rand()
     return dist6(rng);
 }
 
-vector<vector<MazeGenerator::Type>>  MazeGenerator::get_maze()
+string  MazeGenerator::get_maze()
 {
     generate();
 
-    vector<vector<MazeGenerator::Type>> _maze;
-    _maze.resize(height);
-    for (int i = 0; i < _maze.size(); i++)_maze[i].resize(width);
-
-    auto init = [&](int x, int y, vector<vector<MazeGenerator::Type>>& _maze)
+    string m;
+    auto init = [&](int i, int j)
     {
-        if (y == 1 && x == 1)
-            _maze[y][x] = Type::cherry;
-        else if (maze[y][x] == 0)
-            _maze[y][x] = Type::pellet;
+        if (i == 1 && j == 1)
+            m += char(wumpaChar);
+        else if (maze[i][j] == 0)
+            m += char(pelletChar);
         else
-            _maze[y][x] = Type::wall;
+            m += char(mazeChar);
     };
-    for (int y = 0; y < height - 2; y++)
+    for (int i = 0; i < height - 2; i++)
     {
-        for (int x = 0; x < width - 2; x++)
+        for (int j = 0; j < width - 2; j++)
         {
-            init(x, y, _maze);
+            init(i, j);
         }
 
-        for (int x = width - 2; x >= 0; x--)
+        for (int j = width - 2; j >= 0; j--)
         {
-            init(x, y, _maze);
+            init(i, j);
         }
-    }
-    for (int y = height - 2; y >= 0; y--)
-    {
-        for (int x = 0; x < width - 2; x++)
-        {
-            init(x, y, _maze);
-        }
-
-        for (int x = width - 2; x >= 0; x--)
-        {
-            init(x, y, _maze);
-        }
+        m += '\n';
     }
 
-    return _maze;
+    for (int i = height - 2; i >= 0; i--)
+    {
+        for (int j = 0; j < width - 2; j++)
+        {
+            init(i, j);
+        }
+
+        for (int j = width - 2; j >= 0; j--)
+        {
+            init(i, j);
+        }
+        m += '\n';
+    }
+
+    return m;
 }

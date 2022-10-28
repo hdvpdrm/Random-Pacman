@@ -2,6 +2,8 @@
 #define MAZE_GENERATOR_H
 #include<random>
 #include<vector>
+#include<iostream>
+#include<string>
 using namespace std;
 
 class MazeGenerator
@@ -11,12 +13,9 @@ const int width = 39;
 int** maze;
 
 public:
-	enum class Type
-	{
-		wall,
-		pellet,
-		cherry
-	};
+	static const short mazeChar = 0;
+	static const short pelletChar = 1;
+	static const short wumpaChar = 2;
 private:
 	void shuffle(int* arr, int size);
 	void recursion(int r, int c);
@@ -39,7 +38,7 @@ public:
 		delete[] maze;
 	}
 
-	vector<vector<Type>> get_maze();
+	string get_maze();
 
 };
 #endif MAZE_GENERATOR_H
