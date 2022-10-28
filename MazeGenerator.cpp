@@ -9,7 +9,7 @@ void MazeGenerator::shuffle(int* arr, int size)
 
     for (last = size; last > 1; last--)
     {
-        randomNum = rand() % last;
+        randomNum = PacmanRand::rand() % last;
         temporary = arr[randomNum];
         arr[randomNum] = arr[last - 1];
         arr[last - 1] = temporary;
@@ -81,25 +81,17 @@ void MazeGenerator::generate()
         for (int x = 0; x < width; x++)
             maze[i][x] = 1;
 
-    int r = rand() % height;
+    int r = PacmanRand::rand() % height;
     while (r % 2 == 0)
-        r = rand() % height;
+        r = PacmanRand::rand() % height;
 
-    int c = rand() % width;
+    int c = PacmanRand::rand() % width;
     while (c % 2 == 0)
-        c = rand() % width;
+        c = PacmanRand::rand() % width;
 
     maze[r][c] = 0;
 
     recursion(r, c);
-}
-int MazeGenerator::rand()
-{
-    random_device dev;
-    mt19937 rng(dev());
-    uniform_int_distribution<mt19937::result_type> dist6(0, RAND_MAX); 
-
-    return dist6(rng);
 }
 
 string  MazeGenerator::get_maze()

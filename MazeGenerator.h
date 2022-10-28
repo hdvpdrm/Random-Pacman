@@ -1,9 +1,9 @@
 #ifndef MAZE_GENERATOR_H
 #define MAZE_GENERATOR_H
-#include<random>
 #include<vector>
 #include<iostream>
 #include<string>
+#include"rand.h"
 using namespace std;
 
 class MazeGenerator
@@ -21,7 +21,6 @@ private:
 	void recursion(int r, int c);
 	void generate();
 
-	int rand();
 public:
 	MazeGenerator()
 	{
