@@ -2,8 +2,8 @@
 
 Vector2i Character::get_pos_at_maze(const Vector2f& man_new_pos)
 {
-	auto y = (int)man_new_pos.y / movement_offset;
-	auto x = (int)man_new_pos.x / movement_offset;
+	auto y = (int)man_new_pos.y / (int)movement_offset;
+	auto x = (int)man_new_pos.x / (int)movement_offset;
 	return Vector2i(x, y);
 }
 bool Character::can_move(const vector<string>& maze, const Vector2f& new_pos)
