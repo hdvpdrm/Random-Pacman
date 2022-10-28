@@ -137,7 +137,11 @@ vector<string>  MazeGenerator::get_maze()
     }
 
     auto splitted = split(m);
-
+    int teleport_pos = PacmanRand::rand(0, width);
+    splitted[0][teleport_pos] = teleportChar;
+    splitted[splitted.size()-1][teleport_pos] = teleportChar;
+    teleport1_pos = sf::Vector2i(teleport_pos, 0);
+    teleport2_pos = sf::Vector2i(teleport_pos, splitted.size() - 1);
     return splitted;
 }
 vector<string> MazeGenerator::split(const string& str)
