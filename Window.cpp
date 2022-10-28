@@ -19,12 +19,12 @@ Render::Window::Window()
     score_value.setFont(font);
     score_value.setCharacterSize(52);
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < walkers_number; i++)
     {
         GhostWalker* walker = new GhostWalker(maze);
         walkers.push_back(walker);
     }
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < walkers_number; i++)
     {
         Clock* clock = new Clock();
         walkers_clocks.push_back(clock);
@@ -40,7 +40,7 @@ Render::Window::~Window()
 }
 void Render::Window::process_ghosts()
 {
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < walkers_number; i++)
     {
         walkers[i]->run(maze, walkers_clocks[i]);
         if (walkers[i]->does_intersects_pacman(man->get_position()))
@@ -64,6 +64,7 @@ void Render::Window::run()
         man->process_key();
         man->run(maze,clock);
 
+        add_ghosts();
         process_ghosts();
         process_teleports();
 
@@ -196,5 +197,17 @@ void Render::Window::teleport_object(Character* ch, int port_id, const Vector2f&
 
         ch->set_direction((Character::Dir)new_dir);
         ch->set_position(Vector2f(pos_to_go));
+    }
+}
+void Render::Window::add_ghosts()
+{
+    if (man->get_score() == 1000 and !walker_added)
+    {
+        GhostWalker* walker = new GhostWalker(maze);
+        Clock* clock = new Clock();
+        walkers.push_back(walker);
+        walkers_clocks.push_back(clock);
+        walkers_number++;
+        walker_added = true;
     }
 }

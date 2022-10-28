@@ -20,8 +20,10 @@ class Window
 	View* view;
 	Pacman* man;
 
+	int walkers_number = 2;
 	vector<Clock*> walkers_clocks;
 	vector<GhostWalker*> walkers;
+	bool walker_added = false;
 
 	Clock* clock;
 	Font font;
@@ -38,12 +40,11 @@ class Window
 	void draw_ghosts();
 	void draw_score();
 
+
+	void add_ghosts();
 	void process_ghosts();
 	void process_teleports();
 	void teleport_object(Character* ch, int port_id,const Vector2f& port_pos);
-
-	bool is_pressed = false;
-	
 public:
 	Window();
 	~Window();
