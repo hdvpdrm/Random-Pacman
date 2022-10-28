@@ -13,17 +13,26 @@ class Pacman
 	CircleShape* body;
 
 	const float body_radius = 16.0f;
-	Vector2f offset = Vector2f(16.0f, 0.0f);
+	const float movement_offset = 32.0f;
+	const Vector2f offset = Vector2f(16.0f, 0.0f);
+
+	enum class Dir
+	{
+		Left, Right, Down, Up
+	};
+	Dir curr_dir;
 private:
 	Vector2i get_random_pos(const vector<string>& maze);
+	bool can_move(const vector<string>& maze, const Vector2f& new_pos);
+	bool does_eat(const vector<string>& maze, const Vector2f& new_pos);
+	Vector2i get_pos_at_maze(const Vector2f& man_new_pos);
 public:
 	Pacman(const vector<string>& maze);
 	~Pacman();
 
-	Vector2i get_pos()const { return pos; }
-
 	CircleShape* get_body_to_draw()const { return body; };
-	float get_radius()const { return body_radius; };
+	void run(vector<string>& maze,Clock* clock);
+	void process_key();
 
 };
 #endif PACMAN_H

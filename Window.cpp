@@ -10,15 +10,19 @@ Render::Window::Window()
     view->zoom(2.0f);
     maze = split(maze_gen.get_maze());
 
+    man = new Pacman(maze);
+
 }
 Render::Window::~Window()
 {
 	delete win;
     delete view;
+    delete man;
+    delete clock;
 }
 void Render::Window::run()
 {
-    
+    clock = new Clock();
     while (win->isOpen())
     {
         sf::Event event;
@@ -27,10 +31,13 @@ void Render::Window::run()
             if (event.type == sf::Event::Closed)
                 win->close();
         }
-       
+        man->process_key();
+        man->run(maze,clock);
+
         win->setView(*view);
         win->clear();
         draw_maze();
+        draw_man();
         win->display();
     }
 }
@@ -77,6 +84,10 @@ void Render::Window::draw_maze()
             };
         }
     }
+}
+void Render::Window::draw_man()
+{
+    win->draw(*man->get_body_to_draw());
 }
 vector<string> Render::Window::split(const string& str)
 {

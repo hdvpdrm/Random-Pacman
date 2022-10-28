@@ -2,7 +2,7 @@
 #define WINDOW_H
 #include <sstream>
 #include"SFML/Graphics.hpp"
-#include"MazeGenerator.h"
+#include"Pacman.h"
 using namespace sf;
 
 //use namespace to avoid problem with compilation
@@ -15,6 +15,8 @@ class Window
 	vector<string> maze;
 	RenderWindow* win;
 	View* view;
+	Pacman* man;
+	Clock* clock;
 
 	const int win_height = 580;
 	const int win_width = 1280;
@@ -23,6 +25,9 @@ class Window
 	const float element_size = 32.0f;
 	
 	void draw_maze();
+	void draw_man();
+
+	bool is_pressed = false;
 	vector<string> split(const string& str);
 public:
 	Window();
