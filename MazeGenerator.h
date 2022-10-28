@@ -8,10 +8,6 @@ class MazeGenerator
 {
 const int height = 13;
 const int width = 39;
-
-int mazeChar = 475;
-int pelletChar = 250;
-int wumpaChar = 21;
 int** maze;
 
 public:
@@ -37,9 +33,9 @@ public:
 	}
 	~MazeGenerator()
 	{
-		for (int i = 0; i < height; ++i) {
+		for (int i = 0; i < height; ++i) 
 			delete[] maze[i];
-		}
+
 		delete[] maze;
 	}
 
