@@ -137,12 +137,54 @@ vector<string>  MazeGenerator::get_maze()
     }
 
     auto splitted = split(m);
-    int teleport_pos = PacmanRand::rand(0, width);
-    splitted[0][teleport_pos] = teleportChar;
-    splitted[splitted.size()-1][teleport_pos] = teleportChar;
-    teleport1_pos = sf::Vector2i(teleport_pos, 0);
-    teleport2_pos = sf::Vector2i(teleport_pos, splitted.size() - 1);
+    generate_teleports(splitted);
     return splitted;
+}
+void MazeGenerator::generate_teleports(vector<string>& maze)
+{
+    int teleport_pos = PacmanRand::rand(2, width-2);
+    int teleport_pos2 = PacmanRand::rand(2, maze.size()-2);
+
+
+    //check is teleport blocked with wall
+    //if so move teleport point
+    if(maze[1][teleport_pos] != (char)mazeChar)
+        maze[0][teleport_pos] = teleportChar;
+    else
+    {
+        teleport_pos += 1;
+        maze[0][teleport_pos] = teleportChar;
+    }
+
+    if(maze[maze.size() - 2][teleport_pos] != (char)mazeChar)
+        maze[maze.size() - 1][teleport_pos] = teleportChar;
+    else
+    {
+        teleport_pos += 1;
+        maze[maze.size() - 1][teleport_pos] = teleportChar;
+    }
+
+
+    if(maze[teleport_pos2][1] != (char)mazeChar)
+        maze[teleport_pos2][0] = teleportChar;
+    else
+    {
+        teleport_pos2 += 1;
+        maze[teleport_pos2][0] = teleportChar;
+    }
+
+    if(maze[teleport_pos2][maze[0].size() - 2] != (char)mazeChar)
+        maze[teleport_pos2][maze[0].size() - 1] = teleportChar;
+    else
+    {
+        teleport_pos2 += 1;
+        maze[teleport_pos2][maze[0].size() - 1] = teleportChar;
+    }
+
+    teleports[2] = Vector2i(teleport_pos, 1);
+    teleports[3] = Vector2i(teleport_pos, maze.size()-1);
+    teleports[0] = Vector2i(0, teleport_pos2);
+    teleports[1] = Vector2i(maze[0].size()-1, teleport_pos2);
 }
 vector<string> MazeGenerator::split(const string& str)
 {

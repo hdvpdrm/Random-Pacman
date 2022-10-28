@@ -1,11 +1,13 @@
 #ifndef MAZE_GENERATOR_H
 #define MAZE_GENERATOR_H
 #include<vector>
+#include<map>
 #include<string>
 #include <sstream>
 #include"SFML/System/Vector2.hpp"
 #include"rand.h"
 using namespace std;
+using namespace sf;
 
 class MazeGenerator
 {
@@ -25,7 +27,8 @@ private:
 	void generate();
 	vector<string> split(const string& str);
 
-	sf::Vector2i teleport1_pos, teleport2_pos;
+	map<int, Vector2i> teleports;
+	void generate_teleports(vector<string>& maze);
 public:
 	MazeGenerator()
 	{
@@ -43,8 +46,7 @@ public:
 	}
 
 	vector<string> get_maze();
-	sf::Vector2i get_teleport1_pos()const { return teleport1_pos; }
-	sf::Vector2i get_teleport2_pos()const { return teleport2_pos; }
+	map<int,Vector2i> get_teleports() { return teleports; }
 };
 #endif MAZE_GENERATOR_H
 
