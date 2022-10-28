@@ -3,7 +3,6 @@
 Pacman::Pacman(const vector<string>& maze):Character(32.0f)
 {
 	pos = get_random_pos(maze);
-	pos.y += y_offset;
 	start_pos = Vector2f(pos);
 	body = new CircleShape(body_radius);
 	body->setFillColor(Color::Yellow);

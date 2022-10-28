@@ -4,7 +4,7 @@
 #include"MazeGenerator.h"
 #include"Character.h"
 
-class Pacman:Character
+class Pacman:public Character
 {
 	Vector2i pos;
 	Vector2f start_pos;
@@ -21,7 +21,7 @@ public:
 	~Pacman();
 
 	const CircleShape* get_body_to_draw()const { return body; };
-	Vector2f get_position()const { return body->getPosition(); };
+	Vector2f get_position() { return body->getPosition(); };
 	Vector2f get_start_position()const { return start_pos; };
 	void run(vector<string>& maze,Clock* clock);
 	void process_key();
@@ -31,6 +31,10 @@ public:
 	{
 		body->setPosition(start_pos);
 		curr_dir = (Dir)PacmanRand::rand(0, 3);
+	}
+	void set_position(const Vector2f& pos)
+	{
+		body->setPosition(pos);
 	}
 
 	int get_score()const { return score; }
