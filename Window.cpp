@@ -65,6 +65,7 @@ void Render::Window::run()
         man->run(maze,clock);
 
         process_ghosts();
+        process_teleports();
 
         win->setView(*view);
         win->clear();
@@ -136,5 +137,64 @@ void Render::Window::draw_ghosts()
     for (auto& walker : walkers)
     {
         win->draw(*walker->get_body());
+    }
+}
+void Render::Window::process_teleports()
+{
+    for (auto& port : maze_gen.get_teleports())
+    {
+        auto port_pos = Vector2f(port.second.x * element_size, port.second.y * element_size);
+        teleport_object(man, port.first, port_pos);
+       
+        for (auto& walker : walkers)
+            teleport_object(walker, port.first, port_pos);
+    }
+}
+void Render::Window::teleport_object(Character* ch, int port_id, const Vector2f& port_pos)
+{
+    if (ch->get_position() == port_pos)
+    {
+        Vector2i pos_to_go;
+        int new_dir;
+        if (port_id == 0)
+        {
+            pos_to_go = maze_gen.get_teleports()[1];
+            new_dir = 0;
+
+            pos_to_go.x *= element_size;
+            pos_to_go.y *= element_size;
+
+            pos_to_go.x -= element_size;
+        }
+        if (port_id == 1)
+        {
+            pos_to_go = maze_gen.get_teleports()[0];
+            new_dir = 1;
+            pos_to_go.x *= element_size;
+            pos_to_go.y *= element_size;
+
+            pos_to_go.x += element_size;
+        }
+        if (port_id == 2)
+        {
+            pos_to_go = maze_gen.get_teleports()[3];
+            pos_to_go.x *= element_size;
+            pos_to_go.y *= element_size;
+            new_dir = 3;
+
+            pos_to_go.y -= element_size;
+        }
+        if (port_id == 3)
+        {
+            pos_to_go = maze_gen.get_teleports()[2];
+            pos_to_go.x *= element_size;
+            pos_to_go.y *= element_size;
+            new_dir = 2;
+
+            pos_to_go.y += element_size;
+        }
+
+        ch->set_direction((Character::Dir)new_dir);
+        ch->set_position(Vector2f(pos_to_go));
     }
 }

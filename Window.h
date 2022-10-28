@@ -1,9 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 #include"SFML/Graphics.hpp"
+#include<iostream>
 #include"Pacman.h"
 #include"GhostWalker.h"
 using namespace sf;
+using namespace std;
 
 //use namespace to avoid problem with compilation
 //because sfml has Window too
@@ -13,6 +15,7 @@ class Window
 {
 	MazeGenerator maze_gen;
 	vector<string> maze;
+
 	RenderWindow* win;
 	View* view;
 	Pacman* man;
@@ -36,6 +39,8 @@ class Window
 	void draw_score();
 
 	void process_ghosts();
+	void process_teleports();
+	void teleport_object(Character* ch, int port_id,const Vector2f& port_pos);
 
 	bool is_pressed = false;
 	
