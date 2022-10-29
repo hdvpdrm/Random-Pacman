@@ -30,18 +30,49 @@ GhostWalker::~GhostWalker()
 {
 	delete body;
 }
-void GhostWalker::run(vector<string>& maze, Clock* clock)
+void GhostWalker::run(vector<string>& maze, Clock* clock, const Vector2f& man_pos)
 {
 	auto new_pos = move(body->getPosition(),curr_dir);
 	
+	
 	if (!can_move(maze, new_pos))
 	{
-		//generate_random_dir();
+		//if you can move, then go back
 		if (curr_dir == Dir::Left)curr_dir = Dir::Right;
 		else if (curr_dir == Dir::Right)curr_dir = Dir::Left;
 		else if (curr_dir == Dir::Up)curr_dir = Dir::Down;
 		else if (curr_dir == Dir::Down)curr_dir = Dir::Up;
 
+	}
+	else if (does_see_pacman(man_pos, maze))
+	{
+		//if ghost starts seeing pacman 
+		//it changes own direction to move forward to pacman
+
+		auto my_pos = get_pos_at_maze(body->getPosition());
+		auto _man_pos = get_pos_at_maze(man_pos);
+
+		if (my_pos.x == _man_pos.x)
+		{
+			if (my_pos.y > _man_pos.y)
+				curr_dir = Dir::Up;
+			else
+				curr_dir = Dir::Down;
+		}
+		if (my_pos.y == _man_pos.y)
+		{
+			if (my_pos.x > _man_pos.x)
+				curr_dir = Dir::Left;
+			else
+				curr_dir = Dir::Right;
+		}
+
+		auto time = clock->getElapsedTime().asSeconds();
+		if (time > 0.2f)
+		{
+			body->setPosition(move(body->getPosition(), curr_dir));
+			clock->restart();
+		}
 	}
 	else
 	{
@@ -118,4 +149,52 @@ void GhostWalker::run(vector<string>& maze, Clock* clock)
 bool GhostWalker::does_intersects_pacman(const Vector2f& man_pos)
 {
 	return get_pos_at_maze(man_pos) == get_pos_at_maze(body->getPosition());
+}
+int GhostWalker::compute_distance(const Vector2i& pos1, const Vector2i& pos2)
+{
+	int dx = pow(pos1.x - pos2.x, 2);
+	int dy = pow(pos1.y - pos2.y, 2);
+	return (int)sqrt(dx + dy);
+}
+vector<char> GhostWalker::get_maze_elements_between(const Vector2i& pos1, 
+													  const Vector2i& pos2,
+													  const vector<string>& maze)
+{
+	vector<char> elements;
+	if (pos1.x == pos2.x)
+	{
+		int beg = pos1.y < pos2.y ? pos1.y : pos2.y;
+		int end = beg == pos1.y ? pos2.y : pos1.y;
+
+		for (int i = beg; i < end+1; i++)
+		{
+			elements.push_back(maze[i][pos1.x]);
+		}
+	}
+	if (pos1.y == pos2.y)
+	{
+		int beg = pos1.x < pos2.x ? pos1.x : pos2.x;
+		int end = beg == pos1.x ? pos2.x : pos1.x;
+
+		for (int i = beg; i < end+1; i++)
+		{
+			elements.push_back(maze[pos1.y][i]);
+		}
+	}
+	return elements;
+}
+bool GhostWalker::does_see_pacman(const Vector2f& man_pos, const vector<string>& maze)
+{
+	auto my_pos = get_pos_at_maze(body->getPosition());
+	auto _man_pos = get_pos_at_maze(man_pos);
+
+	auto dist = compute_distance(my_pos, _man_pos);
+	bool on_the_same_line = my_pos.x == _man_pos.x or my_pos.y == _man_pos.y;
+	if (dist <= 15 and on_the_same_line)
+	{
+		auto elements_between = get_maze_elements_between(my_pos, _man_pos, maze);
+		bool no_walls = find(elements_between.begin(), elements_between.end(), MazeGenerator::mazeChar) == elements_between.end();
+		return no_walls;
+	}
+	return false;
 }
