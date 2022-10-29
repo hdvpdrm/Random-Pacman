@@ -27,6 +27,23 @@ Render::Window::Window()
     health.setString(":Health");
     health.setPosition(Vector2f(2100.0f,-300.0f));
 
+    ur_dead1.setFont(font);
+    ur_dead1.setCharacterSize(70);
+    ur_dead1.setString("YOU");
+    ur_dead1.setPosition(Vector2f(1100.0f, -350.0f));
+
+    ur_dead2.setFont(font);
+    ur_dead2.setCharacterSize(70);
+    ur_dead2.setString("ARE");
+    ur_dead2.setPosition(Vector2f(1100.0f, -250.0f));
+
+    ur_dead3.setFont(font);
+    ur_dead3.setCharacterSize(80);
+    ur_dead3.setString("DEAD");
+    ur_dead3.setPosition(Vector2f(1060.0f, -160.0f));
+    ur_dead3.setFillColor(Color::Red);
+
+
     title1.setString("RANDOM");
     title1.setFont(font);
     title1.setCharacterSize(128);
@@ -53,7 +70,18 @@ Render::Window::Window()
     adds2.setFont(font);
     adds2.setCharacterSize(60);
     adds2.setPosition(Vector2f(1400.0f, -140.0f));
-
+    
+    generate_ghosts();
+}
+Render::Window::~Window()
+{
+	delete win;
+    delete view;
+    delete man;
+    delete clock;
+}
+void Render::Window::generate_ghosts()
+{
     for (int i = 0; i < walkers_number; i++)
     {
         GhostWalker* walker = new GhostWalker(maze);
@@ -64,14 +92,6 @@ Render::Window::Window()
         Clock* clock = new Clock();
         walkers_clocks.push_back(clock);
     }
-
-}
-Render::Window::~Window()
-{
-	delete win;
-    delete view;
-    delete man;
-    delete clock;
 }
 void Render::Window::process_ghosts()
 {
@@ -100,11 +120,31 @@ void Render::Window::run()
         if (!game_started and Keyboard::isKeyPressed(Keyboard::Space))
             game_started = true;
 
+        if (pacman_is_dead and Keyboard::isKeyPressed(Keyboard::Space))
+        {
+            maze = maze_gen.get_maze();
+            walkers.clear();
+            walkers_clocks.clear();
+            generate_ghosts();
+
+            delete man;
+            man = new Pacman(maze);
+            pacman_is_dead = false;
+            game_started = false;
+        }
+
         if (game_started)
         {
-            man->process_key();
-            man->run(maze, clock);
+            if (!pacman_is_dead)
+            {
+                man->process_key();
+                man->run(maze, clock);
+            }
 
+            if (!pacman_is_dead and man->get_health() == 0)
+            {
+                pacman_is_dead = true;
+            }
             add_ghosts();
             process_ghosts();
             process_teleports();
@@ -115,15 +155,22 @@ void Render::Window::run()
 
         if (game_started)
         {
-            draw_man();
+            if (!pacman_is_dead)
+                draw_man();
+
             draw_score();
             draw_health();
             draw_ghosts();
+
+            if (pacman_is_dead)
+                draw_death_title();
+
         }
-        else
+        else if(!pacman_is_dead)
         {
             draw_title();
         }
+       
         win->display();
     }
 }
@@ -198,6 +245,12 @@ void Render::Window::draw_title()
     win->draw(adds1);
     win->draw(SPACE);
     win->draw(adds2);
+}
+void Render::Window::draw_death_title()
+{
+    win->draw(ur_dead1);
+    win->draw(ur_dead2);
+    win->draw(ur_dead3);
 }
 void Render::Window::draw_health()
 {

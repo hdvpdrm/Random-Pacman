@@ -30,12 +30,12 @@ class Window
 	Font font;
 	Text high_score,score_value;
 	Text title1, title2, adds1,adds2,SPACE;
-	Text health;
+	Text health,ur_dead1, ur_dead2, ur_dead3;
 
 	Texture heart, broken_heart;
 
-
 	bool game_started = false;
+	bool pacman_is_dead = false;
 
 	const int win_height = 580;
 	const int win_width = 1280;
@@ -50,12 +50,15 @@ class Window
 	void draw_score();
 	void draw_title();
 	void draw_health();
+	void draw_death_title();
 
 
 	void add_ghosts();
 	void process_ghosts();
 	void process_teleports();
 	void teleport_object(Character* ch, int port_id,const Vector2f& port_pos);
+
+	void generate_ghosts();
 public:
 	Window();
 	~Window();
