@@ -12,12 +12,20 @@ Render::Window::Window()
 
     man = new Pacman(maze);
 
+    heart.loadFromFile("assets/heart.png");
+    broken_heart.loadFromFile("assets/broken_heart.png");
+
     font.loadFromFile("Phased.ttf");
     high_score.setFont(font);
     high_score.setCharacterSize(56);
     high_score.setString("High Score:");
     score_value.setFont(font);
     score_value.setCharacterSize(52);
+
+    health.setFont(font);
+    health.setCharacterSize(56);
+    health.setString(":Health");
+    health.setPosition(Vector2f(2100.0f,-300.0f));
 
     title1.setString("RANDOM");
     title1.setFont(font);
@@ -109,6 +117,7 @@ void Render::Window::run()
         {
             draw_man();
             draw_score();
+            draw_health();
             draw_ghosts();
         }
         else
@@ -189,6 +198,29 @@ void Render::Window::draw_title()
     win->draw(adds1);
     win->draw(SPACE);
     win->draw(adds2);
+}
+void Render::Window::draw_health()
+{
+    win->draw(health);
+    Vector2f start_pos(2030.0f, -280.0f);
+
+    auto draw = [&](const Texture& texture)
+    {
+        Sprite heart;
+        heart.setTexture(texture);
+        heart.setScale(Vector2f(0.2f, 0.2f));
+        heart.setPosition(start_pos);
+        win->draw(heart);
+        start_pos.x += 100.0f;
+    };
+
+    int number_of_good_hearts = man->get_health();
+    int number_of_broken_hearts = 3 - number_of_good_hearts;
+
+    for (int i = 0; i < number_of_good_hearts; i++)draw(heart);
+
+    for (int i = 0; i < number_of_broken_hearts; i++)draw(broken_heart);
+
 }
 void Render::Window::draw_score()
 {

@@ -30,6 +30,9 @@ class Window
 	Font font;
 	Text high_score,score_value;
 	Text title1, title2, adds1,adds2,SPACE;
+	Text health;
+
+	Texture heart, broken_heart;
 
 
 	bool game_started = false;
@@ -46,6 +49,7 @@ class Window
 	void draw_ghosts();
 	void draw_score();
 	void draw_title();
+	void draw_health();
 
 
 	void add_ghosts();
