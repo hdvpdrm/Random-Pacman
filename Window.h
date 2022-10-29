@@ -34,6 +34,9 @@ class Window
 
 	Texture heart, broken_heart;
 
+	Texture ghost_up, ghost_down, ghost_right, ghost_left;
+
+
 	bool game_started = false;
 	bool pacman_is_dead = false;
 
