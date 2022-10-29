@@ -24,6 +24,7 @@ class Window
 	vector<Clock*> walkers_clocks;
 	vector<GhostWalker*> walkers;
 	bool walker_added = false;
+	vector<int> score_to_add_ghosts = { 1000, 3000, 3500 };
 
 	Clock* clock;
 	Font font;

@@ -42,7 +42,7 @@ void Render::Window::process_ghosts()
 {
     for (int i = 0; i < walkers_number; i++)
     {
-        walkers[i]->run(maze, walkers_clocks[i]);
+        walkers[i]->run(maze, walkers_clocks[i],man->get_position());
         if (walkers[i]->does_intersects_pacman(man->get_position()))
         {
             man->get_back_to_start();
@@ -201,7 +201,9 @@ void Render::Window::teleport_object(Character* ch, int port_id, const Vector2f&
 }
 void Render::Window::add_ghosts()
 {
-    if (man->get_score() == 1000 and !walker_added)
+
+    bool time_to_add = find(score_to_add_ghosts.begin(), score_to_add_ghosts.end(), man->get_score()) != score_to_add_ghosts.end();
+    if (time_to_add and !walker_added)
     {
         GhostWalker* walker = new GhostWalker(maze);
         Clock* clock = new Clock();
@@ -209,5 +211,10 @@ void Render::Window::add_ghosts()
         walkers_clocks.push_back(clock);
         walkers_number++;
         walker_added = true;
+    }
+
+    if (!time_to_add)
+    {
+        walker_added = false;
     }
 }
