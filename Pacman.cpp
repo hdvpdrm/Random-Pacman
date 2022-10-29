@@ -26,7 +26,7 @@ void Pacman::run(vector<string>& maze,Clock* clock)
 		clear_space();
 		score += 10;
 	}
-	if (does_heal(maze, body->getPosition()))
+	if (does_heal(maze, body->getPosition()) && health < 3)
 	{
 		clear_space();
 		health++;
