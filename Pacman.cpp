@@ -21,11 +21,20 @@ void Pacman::run(vector<string>& maze,Clock* clock)
 	auto time = clock->getElapsedTime().asSeconds();
 	if (can_move(maze, new_pos) and time > 0.2f)
 	{
-		if (does_eat(maze, new_pos))
+		auto clear_space = [&]() 
 		{
 			auto pos = get_pos_at_maze(new_pos);
 			maze[pos.y][pos.x] = (char)MazeGenerator::openChar;
+		};
+		if (does_eat(maze, new_pos))
+		{
+			clear_space();
 			score += 10;
+		}
+		if (does_heal(maze, new_pos))
+		{
+			clear_space();
+			health++;
 		}
 		body->setPosition(new_pos);
 		clock->restart();
@@ -36,7 +45,12 @@ bool Pacman::does_eat(const vector<string>& maze, const Vector2f& new_pos)
 {
 	auto pos = get_pos_at_maze(new_pos);
 	if (maze[pos.y][pos.x] == MazeGenerator::pelletChar)return true;
-	
+	return false;
+}
+bool Pacman::does_heal(const vector<string>& maze, const Vector2f& new_pos)
+{
+	auto pos = get_pos_at_maze(new_pos);
+	if (maze[pos.y][pos.x] == MazeGenerator::wumpaChar)return true;
 	return false;
 }
 void Pacman::process_key()

@@ -16,6 +16,7 @@ class Pacman:public Character
 	int health = 3;
 private:
 	bool does_eat(const vector<string>& maze, const Vector2f& new_pos);
+	bool does_heal(const vector<string>& maze, const Vector2f& new_pos);
 public:
 	Pacman(const vector<string>& maze);
 	~Pacman();
