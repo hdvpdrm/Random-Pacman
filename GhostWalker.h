@@ -19,10 +19,10 @@ public:
 	GhostWalker(const vector<string>& maze);
 	~GhostWalker();
 
-	const RectangleShape* get_body()const { return body; };
 	void run(vector<string>& maze, Clock* clock, const Vector2f& man_pos);
 	bool does_intersects_pacman(const Vector2f& man_pos);
 
+	Dir get_dir() { return curr_dir; };
 	void set_position(const Vector2f& pos)
 	{
 		body->setPosition(pos);

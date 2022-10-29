@@ -3,9 +3,6 @@
 GhostWalker::GhostWalker(const vector<string>& maze):Character(32.0f)
 {
 	body = new RectangleShape;
-	body->setFillColor(Color::Magenta);
-	body->setSize(Vector2f(32.0f, 32.0f));
-
 	auto pos = get_random_pos(maze);
 	body->setPosition(Vector2f(pos));
 	generate_random_dir(maze);
