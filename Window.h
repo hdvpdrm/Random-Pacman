@@ -37,6 +37,7 @@ class Window
 	const float element_size = 32.0f;
 	
 	void draw_maze();
+	void draw_floor(const Vector2f& pos);
 	void draw_man();
 	void draw_ghosts();
 	void draw_score();

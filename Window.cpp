@@ -91,7 +91,9 @@ void Render::Window::draw_maze()
                     RectangleShape wall;
                     wall.setSize(Vector2f(element_size, element_size));
                     wall.setPosition(x* element_size, y* element_size);
-                    wall.setFillColor(Color::White);
+                    wall.setOutlineColor(Color::Blue);
+                    wall.setOutlineThickness(2.0f);
+                    wall.setFillColor(Color::Black);
                     win->draw(wall);
                 }
                 break;
@@ -102,7 +104,8 @@ void Render::Window::draw_maze()
 
                     auto offset = element_size / 4;
                     pellet.setPosition(x * element_size+ offset , y * element_size+ offset);
-                    pellet.setFillColor(Color::White);
+                    pellet.setFillColor(Color(244, 129, 9,255));
+                    draw_floor(Vector2f(x * element_size, y * element_size));
                     win->draw(pellet);
                 }
                 break;
@@ -114,9 +117,14 @@ void Render::Window::draw_maze()
                     auto offset = element_size / 4;
                     cherry.setPosition(x * element_size + offset, y * element_size + offset);
                     cherry.setFillColor(Color::Red);
+
+                    draw_floor(Vector2f(x * element_size, y * element_size));
                     win->draw(cherry);
                 };
                 break;
+                default:
+                    draw_floor(Vector2f(x * element_size, y * element_size));
+                    break;
             };
         }
     }
@@ -124,6 +132,14 @@ void Render::Window::draw_maze()
 void Render::Window::draw_man()
 {
     win->draw(*man->get_body_to_draw());
+}
+void Render::Window::draw_floor(const Vector2f& pos)
+{
+    RectangleShape floor;
+    floor.setSize(Vector2f(element_size, element_size));
+    floor.setPosition(pos.x, pos.y);
+    floor.setFillColor(Color(154,155,167,100));
+    win->draw(floor);
 }
 void Render::Window::draw_score()
 {
