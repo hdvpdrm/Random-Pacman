@@ -19,6 +19,33 @@ Render::Window::Window()
     score_value.setFont(font);
     score_value.setCharacterSize(52);
 
+    title1.setString("RANDOM");
+    title1.setFont(font);
+    title1.setCharacterSize(128);
+    title1.setPosition(Vector2f(600.0f, -300.0f));
+
+    title2.setString("PACMAN");
+    title2.setFont(font);
+    title2.setCharacterSize(128);
+    title2.setPosition(Vector2f(1250.0f, -300.0f));
+    title2.setFillColor(Color::Yellow);
+
+    adds1.setString("press");
+    adds1.setFont(font);
+    adds1.setCharacterSize(60);
+    adds1.setPosition(Vector2f(800.0f, -140.0f));
+
+    SPACE.setString("SPACE");
+    SPACE.setFont(font);
+    SPACE.setCharacterSize(70);
+    SPACE.setPosition(Vector2f(1080.0f, -150.0f));
+    SPACE.setFillColor(Color::Blue);
+
+    adds2.setString("to play");
+    adds2.setFont(font);
+    adds2.setCharacterSize(60);
+    adds2.setPosition(Vector2f(1400.0f, -140.0f));
+
     for (int i = 0; i < walkers_number; i++)
     {
         GhostWalker* walker = new GhostWalker(maze);
@@ -61,19 +88,33 @@ void Render::Window::run()
             if (event.type == sf::Event::Closed)
                 win->close();
         }
-        man->process_key();
-        man->run(maze,clock);
 
-        add_ghosts();
-        process_ghosts();
-        process_teleports();
+        if (!game_started and Keyboard::isKeyPressed(Keyboard::Space))
+            game_started = true;
 
+        if (game_started)
+        {
+            man->process_key();
+            man->run(maze, clock);
+
+            add_ghosts();
+            process_ghosts();
+            process_teleports();
+        }
         win->setView(*view);
         win->clear();
         draw_maze();
-        draw_man();
-        draw_score();
-        draw_ghosts();
+
+        if (game_started)
+        {
+            draw_man();
+            draw_score();
+            draw_ghosts();
+        }
+        else
+        {
+            draw_title();
+        }
         win->display();
     }
 }
@@ -140,6 +181,14 @@ void Render::Window::draw_floor(const Vector2f& pos)
     floor.setPosition(pos.x, pos.y);
     floor.setFillColor(Color(154,155,167,100));
     win->draw(floor);
+}
+void Render::Window::draw_title()
+{
+    win->draw(title1);
+    win->draw(title2);
+    win->draw(adds1);
+    win->draw(SPACE);
+    win->draw(adds2);
 }
 void Render::Window::draw_score()
 {

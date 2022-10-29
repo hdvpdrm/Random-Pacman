@@ -29,6 +29,10 @@ class Window
 	Clock* clock;
 	Font font;
 	Text high_score,score_value;
+	Text title1, title2, adds1,adds2,SPACE;
+
+
+	bool game_started = false;
 
 	const int win_height = 580;
 	const int win_width = 1280;
@@ -41,6 +45,7 @@ class Window
 	void draw_man();
 	void draw_ghosts();
 	void draw_score();
+	void draw_title();
 
 
 	void add_ghosts();
