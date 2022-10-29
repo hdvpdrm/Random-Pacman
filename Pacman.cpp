@@ -16,26 +16,27 @@ Pacman::~Pacman()
 }
 void Pacman::run(vector<string>& maze,Clock* clock)
 {
+	auto clear_space = [&]()
+	{
+		auto pos = get_pos_at_maze(body->getPosition());
+		maze[pos.y][pos.x] = (char)MazeGenerator::openChar;
+	};
+	if (does_eat(maze, body->getPosition()))
+	{
+		clear_space();
+		score += 10;
+	}
+	if (does_heal(maze, body->getPosition()))
+	{
+		clear_space();
+		health++;
+	}
+
 	auto new_pos = move(body->getPosition(),curr_dir);
 
 	auto time = clock->getElapsedTime().asSeconds();
 	if (can_move(maze, new_pos) and time > 0.2f)
 	{
-		auto clear_space = [&]() 
-		{
-			auto pos = get_pos_at_maze(new_pos);
-			maze[pos.y][pos.x] = (char)MazeGenerator::openChar;
-		};
-		if (does_eat(maze, new_pos))
-		{
-			clear_space();
-			score += 10;
-		}
-		if (does_heal(maze, new_pos))
-		{
-			clear_space();
-			health++;
-		}
 		body->setPosition(new_pos);
 		clock->restart();
 	}
