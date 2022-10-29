@@ -2,7 +2,7 @@
 
 Render::Window::Window()
 {
-    win = new RenderWindow(VideoMode(win_width, win_height), "pacman");
+    win = new RenderWindow(VideoMode(win_width, win_height), "pacman", sf::Style::Titlebar | sf::Style::Close);
     win->setFramerateLimit(40);
     view = new View();
     view->setCenter(view_center_x, view_center_y);
