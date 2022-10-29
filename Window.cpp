@@ -274,9 +274,12 @@ void Render::Window::draw_health()
     int number_of_good_hearts = man->get_health();
     int number_of_broken_hearts = 3 - number_of_good_hearts;
 
-    for (int i = 0; i < number_of_good_hearts; i++)draw(heart);
 
-    for (int i = 0; i < number_of_broken_hearts; i++)draw(broken_heart);
+    //bugfix
+    if (number_of_broken_hearts > 3)number_of_broken_hearts = 3;
+
+    for (int i = 0; i < number_of_good_hearts; i++)draw(heart);
+    for (int i = 0; i < number_of_broken_hearts;i++)draw(broken_heart);
 
 }
 void Render::Window::draw_score()
