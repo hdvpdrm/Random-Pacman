@@ -3,7 +3,7 @@
 Render::Window::Window()
 {
     win = new RenderWindow(VideoMode(win_width, win_height), "pacman", sf::Style::Titlebar | sf::Style::Close);
-    win->setFramerateLimit(40);
+    win->setFramerateLimit(20);
     view = new View();
     view->setCenter(view_center_x, view_center_y);
     view->setSize(win_width, win_height);
@@ -12,65 +12,11 @@ Render::Window::Window()
 
     man = new Pacman(maze);
 
+    score_to_win = compute_score_to_win();
+
     heart.loadFromFile("assets/heart.png");
     broken_heart.loadFromFile("assets/broken_heart.png");
-
-    font.loadFromFile("Phased.ttf");
-    high_score.setFont(font);
-    high_score.setCharacterSize(56);
-    high_score.setString("High Score:");
-    score_value.setFont(font);
-    score_value.setCharacterSize(52);
-
-    health.setFont(font);
-    health.setCharacterSize(56);
-    health.setString(":Health");
-    health.setPosition(Vector2f(2100.0f,-300.0f));
-
-    ur_dead1.setFont(font);
-    ur_dead1.setCharacterSize(70);
-    ur_dead1.setString("YOU");
-    ur_dead1.setPosition(Vector2f(1100.0f, -350.0f));
-
-    ur_dead2.setFont(font);
-    ur_dead2.setCharacterSize(70);
-    ur_dead2.setString("ARE");
-    ur_dead2.setPosition(Vector2f(1100.0f, -250.0f));
-
-    ur_dead3.setFont(font);
-    ur_dead3.setCharacterSize(80);
-    ur_dead3.setString("DEAD");
-    ur_dead3.setPosition(Vector2f(1060.0f, -160.0f));
-    ur_dead3.setFillColor(Color::Red);
-
-
-    title1.setString("RANDOM");
-    title1.setFont(font);
-    title1.setCharacterSize(128);
-    title1.setPosition(Vector2f(600.0f, -300.0f));
-
-    title2.setString("PACMAN");
-    title2.setFont(font);
-    title2.setCharacterSize(128);
-    title2.setPosition(Vector2f(1250.0f, -300.0f));
-    title2.setFillColor(Color::Yellow);
-
-    adds1.setString("press");
-    adds1.setFont(font);
-    adds1.setCharacterSize(60);
-    adds1.setPosition(Vector2f(800.0f, -140.0f));
-
-    SPACE.setString("SPACE");
-    SPACE.setFont(font);
-    SPACE.setCharacterSize(70);
-    SPACE.setPosition(Vector2f(1080.0f, -150.0f));
-    SPACE.setFillColor(Color::Blue);
-
-    adds2.setString("to play");
-    adds2.setFont(font);
-    adds2.setCharacterSize(60);
-    adds2.setPosition(Vector2f(1400.0f, -140.0f));
-    
+   
     generate_ghosts();
 }
 Render::Window::~Window()
@@ -145,6 +91,13 @@ void Render::Window::run()
             {
                 pacman_is_dead = true;
             }
+
+            if (score_to_win == man->get_score())
+            {
+                game_started = false;
+                victory = true;
+            }
+
             add_ghosts();
             process_ghosts();
             process_teleports();
@@ -158,17 +111,17 @@ void Render::Window::run()
             if (!pacman_is_dead)
                 draw_man();
 
-            draw_score();
+            text_drawer.draw_score(*win,man->get_score());
             draw_health();
             draw_ghosts();
 
             if (pacman_is_dead)
-                draw_death_title();
+                text_drawer.draw_death_title(*win);
 
         }
         else if(!pacman_is_dead)
         {
-            draw_title();
+            text_drawer.draw_title(*win);
         }
        
         win->display();
@@ -239,23 +192,10 @@ void Render::Window::draw_floor(const Vector2f& pos)
     floor.setFillColor(Color(154,155,167,100));
     win->draw(floor);
 }
-void Render::Window::draw_title()
-{
-    win->draw(title1);
-    win->draw(title2);
-    win->draw(adds1);
-    win->draw(SPACE);
-    win->draw(adds2);
-}
-void Render::Window::draw_death_title()
-{
-    win->draw(ur_dead1);
-    win->draw(ur_dead2);
-    win->draw(ur_dead3);
-}
+
 void Render::Window::draw_health()
 {
-    win->draw(health);
+    text_drawer.draw_health(*win);
     Vector2f start_pos(2030.0f, -280.0f);
 
     auto draw = [&](const Texture& texture)
@@ -278,14 +218,6 @@ void Render::Window::draw_health()
     for (int i = 0; i < number_of_good_hearts; i++)draw(heart);
     for (int i = 0; i < number_of_broken_hearts;i++)draw(broken_heart);
 
-}
-void Render::Window::draw_score()
-{
-    score_value.setString(to_string(man->get_score()));
-    score_value.setPosition(10.0f, -240.0f);
-    high_score.setPosition(10.0f, -300.0f);
-    win->draw(high_score);
-    win->draw(score_value);
 }
 void Render::Window::draw_ghosts()
 {
@@ -357,7 +289,7 @@ void Render::Window::teleport_object(Character* ch, int port_id, const Vector2f&
 void Render::Window::add_ghosts()
 {
 
-    bool time_to_add = find(score_to_add_ghosts.begin(), score_to_add_ghosts.end(), man->get_score()) != score_to_add_ghosts.end();
+    bool time_to_add = (man->get_score() % 1000) == 0;
     if (time_to_add and !walker_added)
     {
         GhostWalker* walker = new GhostWalker(maze);
@@ -372,4 +304,13 @@ void Render::Window::add_ghosts()
     {
         walker_added = false;
     }
+}
+int Render::Window::compute_score_to_win()
+{
+    int score = 0;
+    for (auto& line : maze)
+    {
+        score += count(line.begin(), line.end(), (char)MazeGenerator::pelletChar) * 10;
+    }
+    return score;
 }
