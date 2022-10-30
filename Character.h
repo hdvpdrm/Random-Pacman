@@ -31,6 +31,7 @@ public:
 	{
 		curr_dir = dir;
 	}
+	Dir get_dir() { return curr_dir; };
 	Vector2f move(const Vector2f& old_pos, Dir dir);
 
 	virtual Vector2f get_position() = 0;
