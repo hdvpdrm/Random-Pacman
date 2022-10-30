@@ -1,6 +1,7 @@
 #ifndef PACMAN_H
 #define PACMAN_H
 #include"SFML/Graphics.hpp"
+#include"SFML/Audio.hpp"
 #include"MazeGenerator.h"
 #include"Character.h"
 
@@ -15,6 +16,9 @@ class Pacman:public Character
 	bool show1_rate = true;
 	Clock pacman_animation_clock;
 
+	SoundBuffer eat, heal, hurt;
+	Sound eat_sound, heal_sound, hurt_sound;
+
 	const float body_radius = 16.0f;
 	
 
@@ -27,12 +31,16 @@ public:
 	Pacman(const vector<string>& maze);
 	~Pacman();
 
-	const Sprite get_body_to_draw()const { return sprite; };
+	const Sprite& get_body_to_draw()const { return sprite; };
 	Vector2f get_position() { return body->getPosition(); };
 	Vector2f get_start_position()const { return start_pos; };
 	void run(vector<string>& maze,Clock* clock);
 	void process_key();
-	void decrease_health() { health--; };
+	void decrease_health() 
+	{ 
+		hurt_sound.play();
+		health--; 
+	};
 	int get_health() { return health; }
 	void get_back_to_start()
 	{

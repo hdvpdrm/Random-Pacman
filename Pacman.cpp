@@ -14,6 +14,18 @@ Pacman::Pacman(const vector<string>& maze):Character(32.0f)
 	pacman1.loadFromFile("assets/pacman1.png");
 	pacman2.loadFromFile("assets/pacman2.png");
 
+	eat.loadFromFile("assets/sfx-2.ogg");
+	eat_sound.setBuffer(eat);
+	eat_sound.setVolume(50);
+
+	hurt.loadFromFile("assets/sfx-1.ogg");
+	hurt_sound.setBuffer(hurt);
+	hurt_sound.setVolume(70);
+
+	heal.loadFromFile("assets/sfx-3.ogg");
+	heal_sound.setBuffer(heal);
+	heal_sound.setVolume(80);
+
 	curr_dir = (Dir)PacmanRand::rand(0, 3);
 }
 Pacman::~Pacman()
@@ -34,6 +46,7 @@ void Pacman::run(vector<string>& maze,Clock* clock)
 	}
 	if (does_heal(maze, body->getPosition()) && health < 3)
 	{
+		heal_sound.play();
 		clear_space();
 		health++;
 	}
@@ -43,6 +56,7 @@ void Pacman::run(vector<string>& maze,Clock* clock)
 	auto time = clock->getElapsedTime().asSeconds();
 	if (can_move(maze, new_pos) and time > 0.2f)
 	{
+		eat_sound.play();
 		body->setPosition(new_pos);
 		clock->restart();
 	}
