@@ -31,6 +31,11 @@ class Window
 
 	Texture heart, broken_heart;
 
+	SoundBuffer ghost_apperance;
+	Sound ghost_apperance_sound;
+	Music background;
+
+
 	bool is_space_pressed = false;
 	bool game_started = false;
 	bool pacman_is_dead = false;
@@ -59,6 +64,7 @@ class Window
 
 	int compute_score_to_win();
 	void restart();
+	void set_icon();
 public:
 	Window();
 	~Window();

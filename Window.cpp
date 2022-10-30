@@ -4,6 +4,8 @@ Render::Window::Window()
 {
     win = new RenderWindow(VideoMode(win_width, win_height), "pacman", sf::Style::Titlebar | sf::Style::Close);
     win->setFramerateLimit(20);
+    set_icon();
+
     view = new View();
     view->setCenter(view_center_x, view_center_y);
     view->setSize(win_width, win_height);
@@ -13,10 +15,16 @@ Render::Window::Window()
     man = new Pacman(maze);
 
     score_to_win = compute_score_to_win();
+    background.openFromFile("assets/background.ogg");
+    background.setLoop(true);
+    background.setVolume(70);
+    background.play();
 
     heart.loadFromFile("assets/heart.png");
     broken_heart.loadFromFile("assets/broken_heart.png");
-   
+    ghost_apperance.loadFromFile("assets/sfx-7.ogg");
+    ghost_apperance_sound.setBuffer(ghost_apperance);
+
     generate_ghosts();
 }
 Render::Window::~Window()
@@ -298,7 +306,6 @@ void Render::Window::teleport_object(Character* ch, int port_id, const Vector2f&
 }
 void Render::Window::add_ghosts()
 {
-
     bool time_to_add = (man->get_score() % 1000) == 0;
     if (time_to_add and !walker_added)
     {
@@ -308,6 +315,7 @@ void Render::Window::add_ghosts()
         walkers_clocks.push_back(clock);
         walkers_number++;
         walker_added = true;
+        ghost_apperance_sound.play();
     }
 
     if (!time_to_add)
@@ -336,4 +344,12 @@ void Render::Window::restart()
     pacman_is_dead = false;
     game_started = false;
     score_to_win = compute_score_to_win();
+    walkers_number = 2;
+}
+void Render::Window::set_icon()
+{
+    auto image = sf::Image{};
+    image.loadFromFile("assets/pacman2.png");
+
+    win->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
 }
