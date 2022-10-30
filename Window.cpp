@@ -63,25 +63,27 @@ void Render::Window::run()
                 win->close();
         }
 
-        if (!game_started and Keyboard::isKeyPressed(Keyboard::Space))
-            game_started = true;
-
-        if (pacman_is_dead and Keyboard::isKeyPressed(Keyboard::Space))
+        if (!game_started and Keyboard::isKeyPressed(Keyboard::Space) and !is_space_pressed)
         {
-            maze = maze_gen.get_maze();
-            walkers.clear();
-            walkers_clocks.clear();
-            generate_ghosts();
+            game_started = true;
+            is_space_pressed = true;
+        }
 
-            delete man;
-            man = new Pacman(maze);
-            pacman_is_dead = false;
-            game_started = false;
+        if (pacman_is_dead and Keyboard::isKeyPressed(Keyboard::Space) and !is_space_pressed)
+        {
+            restart();
+            is_space_pressed = true;
+        }
+        if (victory and Keyboard::isKeyPressed(Keyboard::Keyboard::Space) and !is_space_pressed)
+        {
+            victory = false;
+            restart();
+            is_space_pressed = true;
         }
 
         if (game_started)
         {
-            if (!pacman_is_dead)
+            if (!pacman_is_dead and !victory)
             {
                 man->process_key();
                 man->run(maze, clock);
@@ -94,13 +96,15 @@ void Render::Window::run()
 
             if (score_to_win == man->get_score())
             {
-                game_started = false;
                 victory = true;
             }
 
-            add_ghosts();
-            process_ghosts();
-            process_teleports();
+            if (!victory)
+            {
+                add_ghosts();
+                process_ghosts();
+                process_teleports();
+            }
         }
         win->setView(*view);
         win->clear();
@@ -123,8 +127,14 @@ void Render::Window::run()
         {
             text_drawer.draw_title(*win);
         }
+        if (victory)
+        {
+            text_drawer.draw_victory_title(*win);
+        }
        
         win->display();
+
+        if (!Keyboard::isKeyPressed(Keyboard::Space)) is_space_pressed = false;
     }
 }
 void Render::Window::draw_maze()
@@ -313,4 +323,17 @@ int Render::Window::compute_score_to_win()
         score += count(line.begin(), line.end(), (char)MazeGenerator::pelletChar) * 10;
     }
     return score;
+}
+void Render::Window::restart()
+{
+    maze = maze_gen.get_maze();
+    walkers.clear();
+    walkers_clocks.clear();
+    generate_ghosts();
+
+    delete man;
+    man = new Pacman(maze);
+    pacman_is_dead = false;
+    game_started = false;
+    score_to_win = compute_score_to_win();
 }

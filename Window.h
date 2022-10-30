@@ -31,10 +31,10 @@ class Window
 
 	Texture heart, broken_heart;
 
-	
+	bool is_space_pressed = false;
 	bool game_started = false;
 	bool pacman_is_dead = false;
-	bool victory = true;
+	bool victory = false;
 
 	const int win_height = 580;
 	const int win_width = 1280;
@@ -58,6 +58,7 @@ class Window
 	void generate_ghosts();
 
 	int compute_score_to_win();
+	void restart();
 public:
 	Window();
 	~Window();

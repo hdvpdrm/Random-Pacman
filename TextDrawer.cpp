@@ -57,6 +57,12 @@ TextDrawer::TextDrawer()
     adds2.setFont(font);
     adds2.setCharacterSize(60);
     adds2.setPosition(Vector2f(1400.0f, -140.0f));
+
+    victory.setString("VICTORY!");
+    victory.setFont(font);
+    victory.setCharacterSize(120);
+    victory.setFillColor(Color::Red);
+    victory.setPosition(Vector2(920.0f, -300.0f));
 }
 void TextDrawer::draw_death_title(RenderWindow& window)
 {
@@ -83,4 +89,8 @@ void TextDrawer::draw_title(RenderWindow& window)
 void TextDrawer::draw_health(RenderWindow& window)
 {
     window.draw(health);
+}
+void TextDrawer::draw_victory_title(RenderWindow& window)
+{
+    window.draw(victory);
 }
