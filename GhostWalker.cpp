@@ -6,6 +6,13 @@ GhostWalker::GhostWalker(const vector<string>& maze):Character(32.0f)
 	auto pos = get_random_pos(maze);
 	body->setPosition(Vector2f(pos));
 	generate_random_dir(maze);
+
+	ghost_up.loadFromFile("assets/ghost_up.png");
+	ghost_down.loadFromFile("assets/ghost_down.png");
+	ghost_left.loadFromFile("assets/ghost_left.png");
+	ghost_right.loadFromFile("assets/ghost_right.png");
+
+	ghost.setScale(0.03f, 0.03f);
 }
 void GhostWalker::generate_random_dir(const vector<string>& maze)
 {
@@ -194,4 +201,23 @@ bool GhostWalker::does_see_pacman(const Vector2f& man_pos, const vector<string>&
 		return no_walls;
 	}
 	return false;
+}
+void GhostWalker::animate()
+{
+	ghost.setPosition(get_position());
+	switch (get_dir())
+	{
+	case Character::Dir::Down:
+		ghost.setTexture(ghost_down);
+		break;
+	case Character::Dir::Up:
+		ghost.setTexture(ghost_up);
+		break;
+	case Character::Dir::Left:
+		ghost.setTexture(ghost_left);
+		break;
+	case Character::Dir::Right:
+		ghost.setTexture(ghost_right);
+		break;
+	}
 }

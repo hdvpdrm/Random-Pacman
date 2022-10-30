@@ -14,10 +14,6 @@ Render::Window::Window()
 
     heart.loadFromFile("assets/heart.png");
     broken_heart.loadFromFile("assets/broken_heart.png");
-    ghost_up.loadFromFile("assets/ghost_up.png");
-    ghost_down.loadFromFile("assets/ghost_down.png");
-    ghost_left.loadFromFile("assets/ghost_left.png");
-    ghost_right.loadFromFile("assets/ghost_right.png");
 
     font.loadFromFile("Phased.ttf");
     high_score.setFont(font);
@@ -232,7 +228,8 @@ void Render::Window::draw_maze()
 }
 void Render::Window::draw_man()
 {
-    win->draw(*man->get_body_to_draw());
+    man->animate();
+    win->draw(man->get_body_to_draw());
 }
 void Render::Window::draw_floor(const Vector2f& pos)
 {
@@ -294,25 +291,8 @@ void Render::Window::draw_ghosts()
 {
     for (auto& walker : walkers)
     {
-        Sprite ghost;
-        ghost.setScale(0.03f, 0.03f);
-        ghost.setPosition(walker->get_position());
-        switch (walker->get_dir())
-        {
-        case Character::Dir::Down:
-            ghost.setTexture(ghost_down);
-        break;
-        case Character::Dir::Up:
-            ghost.setTexture(ghost_up);
-        break;
-        case Character::Dir::Left:
-            ghost.setTexture(ghost_left);
-        break;
-        case Character::Dir::Right:
-            ghost.setTexture(ghost_right);
-        break;
-        }
-        win->draw(ghost);
+        walker->animate();
+        win->draw(walker->get_sprite_to_draw());
     }
 }
 void Render::Window::process_teleports()
