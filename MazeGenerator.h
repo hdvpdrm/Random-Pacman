@@ -48,5 +48,5 @@ public:
 	vector<string> get_maze();
 	map<int,Vector2i> get_teleports() { return teleports; }
 };
-#endif MAZE_GENERATOR_H
+#endif //MAZE_GENERATOR_H
 

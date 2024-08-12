@@ -56,4 +56,4 @@ public:
 	void animate();
 
 };
-#endif PACMAN_H
+#endif //PACMAN_H

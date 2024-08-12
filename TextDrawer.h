@@ -21,5 +21,5 @@ public:
 	void draw_health(RenderWindow& window);
 	void draw_victory_title(RenderWindow& window);
 };
-#endif TEXT_DRAWER_H
+#endif //TEXT_DRAWER_H
 

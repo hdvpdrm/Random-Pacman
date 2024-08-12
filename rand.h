@@ -20,4 +20,4 @@ int rand()
 
 };
 };
-#endif RAND_H
+#endif //RAND_H

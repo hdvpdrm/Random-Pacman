@@ -72,5 +72,5 @@ public:
 	void run();
 };
 }
-#endif WINDOW_H
+#endif //WINDOW_H
 
