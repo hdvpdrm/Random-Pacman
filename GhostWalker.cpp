@@ -197,7 +197,7 @@ bool GhostWalker::does_see_pacman(const Vector2f& man_pos, const vector<string>&
 	if (dist <= 15 and on_the_same_line)
 	{
 		auto elements_between = get_maze_elements_between(my_pos, _man_pos, maze);
-		bool no_walls = find(elements_between.begin(), elements_between.end(), MazeGenerator::mazeChar) == elements_between.end();
+		bool no_walls = find(elements_between.begin(), elements_between.end(), 0) == elements_between.end();
 		return no_walls;
 	}
 	return false;
