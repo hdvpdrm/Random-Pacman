@@ -11,18 +11,18 @@ Pacman::Pacman(const vector<string>& maze):Character(32.0f)
 	body->setPosition(start_pos);
 	sprite.setPosition(Vector2f(pos));
 
-	pacman1.loadFromFile("assets/pacman1.png");
-	pacman2.loadFromFile("assets/pacman2.png");
+	pacman1.loadFromMemory(pacman1_png,pacman1_png_len);
+	pacman2.loadFromMemory(pacman2_png,pacman2_png_len);
 
-	eat.loadFromFile("assets/sfx-2.ogg");
+	eat.loadFromMemory(eat_ogg, eat_ogg_len);
 	eat_sound.setBuffer(eat);
 	eat_sound.setVolume(50);
 
-	hurt.loadFromFile("assets/sfx-1.ogg");
+	hurt.loadFromMemory(hurt_ogg,hurt_ogg_len);
 	hurt_sound.setBuffer(hurt);
 	hurt_sound.setVolume(70);
 
-	heal.loadFromFile("assets/sfx-3.ogg");
+	heal.loadFromMemory(heal_ogg,heal_ogg_len);
 	heal_sound.setBuffer(heal);
 	heal_sound.setVolume(80);
 

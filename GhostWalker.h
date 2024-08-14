@@ -5,6 +5,14 @@
 #include"MazeGenerator.h"
 #include<cmath>
 #include<iostream>
+
+
+//include textures
+#include"ghost_up.h"
+#include"ghost_down.h"
+#include"ghost_left.h"
+#include"ghost_right.h"
+
 using namespace sf;
 class GhostWalker:public Character
 {

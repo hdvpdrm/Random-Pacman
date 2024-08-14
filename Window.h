@@ -5,6 +5,14 @@
 #include"Pacman.h"
 #include"GhostWalker.h"
 #include"TextDrawer.h"
+
+//include background music and required textures
+#include"background.h"
+#include"heart.h"
+#include"broken_heart.h"
+#include"ghost_apperance.h"
+
+
 using namespace sf;
 using namespace std;
 

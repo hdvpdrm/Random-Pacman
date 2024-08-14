@@ -2,17 +2,17 @@
 
 TextDrawer::TextDrawer()
 {
-    font.loadFromFile("Phased.ttf");
-    high_score.setFont(font);
-    high_score.setCharacterSize(56);
-    high_score.setString("High Score:");
-    score_value.setFont(font);
-    score_value.setCharacterSize(52);
+  font.loadFromMemory(Phased_ttf,Phased_ttf_len);
+  high_score.setFont(font);
+  high_score.setCharacterSize(56);
+  high_score.setString("High Score:");
+  score_value.setFont(font);
+  score_value.setCharacterSize(52);
 
-    health.setFont(font);
-    health.setCharacterSize(56);
-    health.setString(":Health");
-    health.setPosition(Vector2f(2100.0f, -300.0f));
+  health.setFont(font);
+  health.setCharacterSize(56);
+  health.setString(":Health");
+  health.setPosition(Vector2f(2100.0f, -300.0f));
 
     ur_dead1.setFont(font);
     ur_dead1.setCharacterSize(70);

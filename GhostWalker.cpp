@@ -7,10 +7,10 @@ GhostWalker::GhostWalker(const vector<string>& maze):Character(32.0f)
 	body->setPosition(Vector2f(pos));
 	generate_random_dir(maze);
 
-	ghost_up.loadFromFile("assets/ghost_up.png");
-	ghost_down.loadFromFile("assets/ghost_down.png");
-	ghost_left.loadFromFile("assets/ghost_left.png");
-	ghost_right.loadFromFile("assets/ghost_right.png");
+	ghost_up.loadFromMemory(ghost_up_png,ghost_up_png_len);
+	ghost_down.loadFromMemory(ghost_down_png,ghost_down_png_len);
+	ghost_left.loadFromMemory(ghost_left_png,ghost_left_png_len);
+	ghost_right.loadFromMemory(ghost_right_png,ghost_right_png_len);
 
 	ghost.setScale(0.03f, 0.03f);
 }

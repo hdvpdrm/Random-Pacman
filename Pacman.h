@@ -5,6 +5,13 @@
 #include"MazeGenerator.h"
 #include"Character.h"
 
+//include binary data for pacman textures
+#include"pacman1.h"
+#include"pacman2.h"
+#include"heal.h"
+#include"hurt.h"
+#include"eat.h"
+
 class Pacman:public Character
 {
 	Vector2i pos;

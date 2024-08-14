@@ -15,14 +15,14 @@ Render::Window::Window()
     man = new Pacman(maze);
 
     score_to_win = compute_score_to_win();
-    background.openFromFile("assets/background.ogg");
+    background.openFromMemory(background_ogg,background_ogg_len);
     background.setLoop(true);
     background.setVolume(70);
     background.play();
 
-    heart.loadFromFile("assets/heart.png");
-    broken_heart.loadFromFile("assets/broken_heart.png");
-    ghost_apperance.loadFromFile("assets/sfx-7.ogg");
+    heart.loadFromMemory(heart_png,heart_png_len);
+    broken_heart.loadFromMemory(broken_heart_png,broken_heart_png_len);
+    ghost_apperance.loadFromMemory(ghost_apperance_ogg,ghost_apperance_ogg_len);
     ghost_apperance_sound.setBuffer(ghost_apperance);
 
     generate_ghosts();
@@ -349,7 +349,7 @@ void Render::Window::restart()
 void Render::Window::set_icon()
 {
     auto image = sf::Image{};
-    image.loadFromFile("assets/pacman2.png");
+    image.loadFromMemory(pacman2_png,pacman2_png_len);
 
     win->setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
 }
