@@ -74,24 +74,25 @@ bool Pacman::does_heal(const vector<string>& maze, const Vector2f& new_pos)
 	if (maze[pos.y][pos.x] == MazeGenerator::wumpaChar)return true;
 	return false;
 }
+#define ISKP(x) sf::Keyboard::isKeyPressed(sf::Keyboard::x)
 void Pacman::process_key()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		curr_dir = Dir::Left;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		curr_dir = Dir::Right;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		curr_dir = Dir::Down;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		curr_dir = Dir::Up;
-	}
+  if (ISKP(Left) || ISKP(A))
+    {
+      curr_dir = Dir::Left;
+    }
+  if (ISKP(Right) || ISKP(D))
+    {
+      curr_dir = Dir::Right;
+    }
+  if (ISKP(Down) || ISKP(S))
+    {
+      curr_dir = Dir::Down;
+    }
+  if (ISKP(Up) || ISKP(W)) 
+    {
+      curr_dir = Dir::Up;
+    }
 }
 void Pacman::animate()
 {
