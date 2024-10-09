@@ -29,10 +29,10 @@ Render::Window::Window()
 }
 Render::Window::~Window()
 {
-	delete win;
-    delete view;
-    delete man;
-    delete clock;
+  delete win;
+  delete view;
+  delete man;
+  delete clock;
 }
 void Render::Window::generate_ghosts()
 {
@@ -79,14 +79,11 @@ void Render::Window::run()
 
         if (pacman_is_dead and Keyboard::isKeyPressed(Keyboard::Space) and !is_space_pressed)
         {
-            restart();
-            is_space_pressed = true;
+	  exit(0);
         }
         if (victory and Keyboard::isKeyPressed(Keyboard::Keyboard::Space) and !is_space_pressed)
         {
-            victory = false;
-            restart();
-            is_space_pressed = true;
+	    exit(0);
         }
 
         if (game_started)
@@ -159,23 +156,26 @@ void Render::Window::draw_maze()
                     RectangleShape wall;
                     wall.setSize(Vector2f(element_size, element_size));
                     wall.setPosition(x* element_size, y* element_size);
-                    wall.setOutlineColor(Color::Blue);
-                    wall.setOutlineThickness(2.0f);
-                    wall.setFillColor(Color::Black);
+                    wall.setOutlineColor(Color(101,101,101,255));
+                    //wall.setOutlineThickness(2.0f);
+                    wall.setFillColor(Color(101,101,101,255));
                     win->draw(wall);
                 }
                 break;
                 case char(MazeGenerator::pelletChar):
                 {
                     CircleShape pellet;
-                    pellet.setRadius(element_size / 4);
+		    auto r  = element_size /4;
+                    pellet.setRadius(r-2);
 
                     auto offset = element_size / 4;
-                    pellet.setPosition(x * element_size+ offset , y * element_size+ offset);
-                    pellet.setFillColor(Color(244, 129, 9,255));
+                    pellet.setPosition(x * element_size+ offset+2 , y * element_size+ offset+2);
+                    pellet.setFillColor(Color(255, 226, 0,255));
+		    //pellet.setFillColor(Color::Yellow);
+		    //pellet.setOutlineThickness(-0.5f);
+		    //pellet.setOutlineColor(Color::Black);
                     draw_floor(Vector2f(x * element_size, y * element_size));
-                    win->draw(pellet);
-                }
+                    win->draw(pellet);                }
                 break;
                 case char(MazeGenerator::wumpaChar):
                 {
@@ -207,7 +207,9 @@ void Render::Window::draw_floor(const Vector2f& pos)
     RectangleShape floor;
     floor.setSize(Vector2f(element_size, element_size));
     floor.setPosition(pos.x, pos.y);
-    floor.setFillColor(Color(154,155,167,100));
+    //floor.setFillColor(Color(180,180,180,255));
+    floor.setFillColor(Color::Black);
+    //floor.setFillColor(Color::White);
     win->draw(floor);
 }
 
@@ -306,7 +308,7 @@ void Render::Window::teleport_object(Character* ch, int port_id, const Vector2f&
 }
 void Render::Window::add_ghosts()
 {
-    bool time_to_add = (man->get_score() % 1000) == 0;
+    bool time_to_add = (man->get_score() % 2000) == 0;
     if (time_to_add and !walker_added)
     {
         GhostWalker* walker = new GhostWalker(maze);
@@ -345,6 +347,8 @@ void Render::Window::restart()
     game_started = false;
     score_to_win = compute_score_to_win();
     walkers_number = 2;
+    win->clear();
+    walker_added = false;
 }
 void Render::Window::set_icon()
 {
