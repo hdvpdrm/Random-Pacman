@@ -157,7 +157,6 @@ void Render::Window::draw_maze()
                     wall.setSize(Vector2f(element_size, element_size));
                     wall.setPosition(x* element_size, y* element_size);
                     wall.setOutlineColor(Color(101,101,101,255));
-                    //wall.setOutlineThickness(2.0f);
                     wall.setFillColor(Color(101,101,101,255));
                     win->draw(wall);
                 }
@@ -171,9 +170,6 @@ void Render::Window::draw_maze()
                     auto offset = element_size / 4;
                     pellet.setPosition(x * element_size+ offset+2 , y * element_size+ offset+2);
                     pellet.setFillColor(Color(255, 226, 0,255));
-		    //pellet.setFillColor(Color::Yellow);
-		    //pellet.setOutlineThickness(-0.5f);
-		    //pellet.setOutlineColor(Color::Black);
                     draw_floor(Vector2f(x * element_size, y * element_size));
                     win->draw(pellet);                }
                 break;
