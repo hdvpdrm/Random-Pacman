@@ -36,6 +36,11 @@ void MazeGenerator::recursion(int r, int c)
             if (maze[r - 2][c] != 0) {
                 maze[r - 2][c] = 0;
                 maze[r - 1][c] = 0;
+		if(c-1 != 0)
+		  {
+		maze[r][c-1] = 0;
+                maze[r][c-1] = 0;
+		  }
                 recursion(r - 2, c);
             }
             break;
@@ -47,6 +52,9 @@ void MazeGenerator::recursion(int r, int c)
             if (maze[r][c + 2] != 0) {
                 maze[r][c + 2] = 0;
                 maze[r][c + 1] = 0;
+
+		maze[r+1][c] = 0;
+		maze[r+1][c] = 0;
                 recursion(r, c + 2);
             }
             break;
@@ -90,7 +98,7 @@ void MazeGenerator::generate()
         c = PacmanRand::rand() % width;
 
     maze[r][c] = 0;
-
+    maze[r][c-1] = 0;
     recursion(r, c);
 }
 
@@ -105,7 +113,7 @@ vector<string>  MazeGenerator::get_maze()
             m += char(wumpaChar);
         else if (maze[i][j] == 0)
             m += char(pelletChar);
-        else
+        else	 
             m += char(mazeChar);
     };
     for (int i = 0; i < height - 2; i++)
