@@ -52,9 +52,11 @@ void MazeGenerator::recursion(int r, int c)
             if (maze[r][c + 2] != 0) {
                 maze[r][c + 2] = 0;
                 maze[r][c + 1] = 0;
-
+		if(r+2 != width)
+		  {
 		maze[r+1][c] = 0;
 		maze[r+1][c] = 0;
+		  }
                 recursion(r, c + 2);
             }
             break;
