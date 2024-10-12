@@ -4,6 +4,7 @@
 #include<map>
 #include<string>
 #include <sstream>
+#include<iostream>
 #include"SFML/System/Vector2.hpp"
 #include"rand.h"
 using namespace std;
@@ -11,8 +12,8 @@ using namespace sf;
 
 class MazeGenerator
 {
-const int height = 13;
-const int width = 39;
+const int height = 20;
+const int width = 20;
 int** maze;
 
 public:
