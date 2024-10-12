@@ -4,7 +4,7 @@ GhostWalker::GhostWalker(const vector<string>& maze):Character(32.0f)
 {
 	body = new RectangleShape;
 	auto pos = get_random_pos(maze);
-	body->setPosition(Vector2f(pos));
+	body->setPosition(pos.x,pos.y);
 	generate_random_dir(maze);
 
 	ghost_up.loadFromMemory(ghost_up_png,ghost_up_png_len);
@@ -161,8 +161,8 @@ int GhostWalker::compute_distance(const Vector2i& pos1, const Vector2i& pos2)
 	return (int)sqrt(dx + dy);
 }
 vector<char> GhostWalker::get_maze_elements_between(const Vector2i& pos1, 
-													  const Vector2i& pos2,
-													  const vector<string>& maze)
+						    const Vector2i& pos2,
+						    const vector<string>& maze)
 {
 	vector<char> elements;
 	if (pos1.x == pos2.x)
@@ -204,7 +204,8 @@ bool GhostWalker::does_see_pacman(const Vector2f& man_pos, const vector<string>&
 }
 void GhostWalker::animate()
 {
-	ghost.setPosition(get_position());
+  auto pos = sf::Vector2f(get_position().x+40,get_position().y+80);
+  ghost.setPosition(pos);
 	switch (get_dir())
 	{
 	case Character::Dir::Down:
