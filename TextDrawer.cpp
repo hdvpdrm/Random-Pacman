@@ -2,67 +2,67 @@
 
 TextDrawer::TextDrawer()
 {
-  font.loadFromMemory(Phased_ttf,Phased_ttf_len);
+  font.loadFromMemory(ARCADECLASSIC_TTF,ARCADECLASSIC_TTF_len);
   high_score.setFont(font);
-  high_score.setCharacterSize(56);
-  high_score.setString("High Score:");
+  high_score.setCharacterSize(70);
+  high_score.setString("High Score");
   score_value.setFont(font);
-  score_value.setCharacterSize(52);
+  score_value.setCharacterSize(70);
 
   health.setFont(font);
-  health.setCharacterSize(56);
-  health.setString(":Health");
-  health.setPosition(Vector2f(2100.0f, -300.0f));
+  health.setCharacterSize(70);
+  health.setString("Health");
+  health.setPosition(Vector2f(1020.0f, -28.0f));
 
-    ur_dead1.setFont(font);
-    ur_dead1.setCharacterSize(70);
-    ur_dead1.setString("YOU");
-    ur_dead1.setPosition(Vector2f(1100.0f, -350.0f));
+  ur_dead1.setFont(font);
+  ur_dead1.setCharacterSize(80);
+  ur_dead1.setString("YOU");
+  ur_dead1.setPosition(Vector2f(500.0f, -70.0f));
 
-    ur_dead2.setFont(font);
-    ur_dead2.setCharacterSize(70);
-    ur_dead2.setString("ARE");
-    ur_dead2.setPosition(Vector2f(1100.0f, -250.0f));
+  ur_dead2.setFont(font);
+  ur_dead2.setCharacterSize(80);
+  ur_dead2.setString("ARE");
+  ur_dead2.setPosition(Vector2f(640.0f, -70.0f));
 
-    ur_dead3.setFont(font);
-    ur_dead3.setCharacterSize(80);
-    ur_dead3.setString("DEAD");
-    ur_dead3.setPosition(Vector2f(1060.0f, -160.0f));
-    ur_dead3.setFillColor(Color::Red);
+  ur_dead3.setFont(font);
+  ur_dead3.setCharacterSize(100);
+  ur_dead3.setString("DEAD");
+  ur_dead3.setPosition(Vector2f(530.0f, -30.0f));
+  ur_dead3.setFillColor(Color::Magenta);
 
 
-    title1.setString("RANDOM");
-    title1.setFont(font);
-    title1.setCharacterSize(128);
-    title1.setPosition(Vector2f(600.0f, -300.0f));
+  title1.setString("RANDOM");
+  title1.setFont(font);
+  title1.setCharacterSize(100);
+  title1.setPosition(Vector2f(250.0f, -80.0f));
 
-    title2.setString("PACMAN");
-    title2.setFont(font);
-    title2.setCharacterSize(128);
-    title2.setPosition(Vector2f(1250.0f, -300.0f));
-    title2.setFillColor(Color::Yellow);
+  title2.setString("PACMAN");
+  title2.setFont(font);
+  title2.setCharacterSize(100);
+  title2.setPosition(Vector2f(640.0f, -80.0f));
+  title2.setFillColor(Color::Yellow);
 
-    adds1.setString("press");
-    adds1.setFont(font);
-    adds1.setCharacterSize(60);
-    adds1.setPosition(Vector2f(800.0f, -140.0f));
+  adds1.setString("press");
+  adds1.setFont(font);
+  adds1.setCharacterSize(70);
+  adds1.setPosition(Vector2f(270.0f, 5.0f));
 
-    SPACE.setString("SPACE");
-    SPACE.setFont(font);
-    SPACE.setCharacterSize(70);
-    SPACE.setPosition(Vector2f(1080.0f, -150.0f));
-    SPACE.setFillColor(Color::Blue);
+  SPACE.setString("SPACE");
+  SPACE.setFont(font);
+  SPACE.setCharacterSize(80);
+  SPACE.setPosition(Vector2f(480.0f, -5.0f));
+  SPACE.setFillColor(Color::Magenta);
 
-    adds2.setString("to play");
-    adds2.setFont(font);
-    adds2.setCharacterSize(60);
-    adds2.setPosition(Vector2f(1400.0f, -140.0f));
+  adds2.setString("to play");
+  adds2.setFont(font);
+  adds2.setCharacterSize(70);
+  adds2.setPosition(Vector2f(720.0f, 5.0f));
 
-    victory.setString("VICTORY!");
-    victory.setFont(font);
-    victory.setCharacterSize(120);
-    victory.setFillColor(Color::Red);
-    victory.setPosition(Vector2(920.0f, -300.0f));
+  victory.setString("VICTORY");
+  victory.setFont(font);
+  victory.setCharacterSize(90); 
+  victory.setFillColor(Color::Yellow);
+  victory.setPosition(Vector2f(450.0f, -40.0f));
 }
 void TextDrawer::draw_death_title(RenderWindow& window)
 {
@@ -73,8 +73,8 @@ void TextDrawer::draw_death_title(RenderWindow& window)
 void TextDrawer::draw_score(RenderWindow& window, int score)
 {
     score_value.setString(std::to_string(score));
-    score_value.setPosition(10.0f, -240.0f);
-    high_score.setPosition(10.0f, -300.0f);
+    score_value.setPosition(380.0f, -28.0f);
+    high_score.setPosition(-20.0f, -30.0f);
     window.draw(high_score);
     window.draw(score_value);
 }

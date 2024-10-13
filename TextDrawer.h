@@ -5,7 +5,7 @@
 using namespace sf;
 
 //include binary data of font
-#include"Phased.h"
+#include"font.h"
 
 class TextDrawer
 {
