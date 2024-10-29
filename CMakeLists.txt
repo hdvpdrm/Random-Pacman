@@ -7,3 +7,7 @@ set(HEADERS  MazeGenerator.h Window.h Pacman.h GhostWalker.h Character.h rand.h 
 
 add_link_options(-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio)
 add_executable(random_pacman ${SOURCE} ${HEADERS}) 
+
+install(TARGETS random_pacman RUNTIME DESTINATION bin)
+
+

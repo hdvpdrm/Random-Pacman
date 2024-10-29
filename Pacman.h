@@ -14,31 +14,32 @@
 
 class Pacman:public Character
 {
-	Vector2i pos;
-	Vector2f start_pos;
-	CircleShape* body;
 
-	Sprite sprite;
-	Texture pacman1, pacman2;
-	bool show1_rate = true;
-	Clock pacman_animation_clock;
-
-	SoundBuffer eat, heal, hurt;
-	Sound eat_sound, heal_sound, hurt_sound;
-
-	const float body_radius = 16.0f;
+  Vector2i pos;
+  Vector2f start_pos;
+  CircleShape* body;
+  Sprite sprite;
+  Texture pacman1, pacman2;
+  bool show1_rate = true;
+  Clock pacman_animation_clock;
+  
+  SoundBuffer eat, heal, hurt;
+  Sound eat_sound, heal_sound, hurt_sound;
+  
+  const float body_radius = 16.0f;
 	
 
-	int score = 0;
-	int health = 3;
+  int score = 0;
+  int health = 3;
 private:
-	bool does_eat(const vector<string>& maze, const Vector2f& new_pos);
-	bool does_heal(const vector<string>& maze, const Vector2f& new_pos);
+  Drawable* create_pacman_body(float radius);
+  bool does_eat(const vector<string>& maze, const Vector2f& new_pos);
+  bool does_heal(const vector<string>& maze, const Vector2f& new_pos);
 public:
-	Pacman(const vector<string>& maze);
+  Pacman(const vector<string>& maze, const Vector2f& pos);
 	~Pacman();
 
-	const Sprite& get_body_to_draw()const { return sprite; };
+  const Sprite& get_body_to_draw()const { return sprite; };
 	Vector2f get_position() { return body->getPosition(); };
 	Vector2f get_start_position()const { return start_pos; };
 	void run(vector<string>& maze,Clock* clock);

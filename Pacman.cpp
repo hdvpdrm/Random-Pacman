@@ -1,19 +1,18 @@
 #include "Pacman.h"
 
-Pacman::Pacman(const vector<string>& maze):Character(32.0f)
+Pacman::Pacman(const vector<string>& maze,const Vector2f& pos):Character(32.0f)
 {
-	body = new CircleShape();
-	body->setRadius(body_radius);
-
-	pos = get_random_pos(maze);
-	start_pos = Vector2f(pos);
-
-	body->setPosition(start_pos);
-	sprite.setPosition(Vector2f(pos));
-
+  start_pos = pos;
+  
+  body = new CircleShape();
+  body->setRadius(body_radius);
+  
+  body->setPosition(pos);
+  sprite.setPosition(Vector2f(pos));
+  
 	pacman1.loadFromMemory(pacman1_png,pacman1_png_len);
 	pacman2.loadFromMemory(pacman2_png,pacman2_png_len);
-
+	
 	eat.loadFromMemory(eat_ogg, eat_ogg_len);
 	eat_sound.setBuffer(eat);
 	eat_sound.setVolume(50);
@@ -74,33 +73,32 @@ bool Pacman::does_heal(const vector<string>& maze, const Vector2f& new_pos)
 	if (maze[pos.y][pos.x] == MazeGenerator::wumpaChar)return true;
 	return false;
 }
-#define ISKP(x) sf::Keyboard::isKeyPressed(sf::Keyboard::x)
 void Pacman::process_key()
 {
-  if (ISKP(Left) || ISKP(A))
-    {
-      curr_dir = Dir::Left;
-    }
-  if (ISKP(Right) || ISKP(D))
-    {
-      curr_dir = Dir::Right;
-    }
-  if (ISKP(Down) || ISKP(S))
-    {
-      curr_dir = Dir::Down;
-    }
-  if (ISKP(Up) || ISKP(W)) 
-    {
-      curr_dir = Dir::Up;
-    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		curr_dir = Dir::Left;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		curr_dir = Dir::Right;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		curr_dir = Dir::Down;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		curr_dir = Dir::Up;
+	}
 }
 void Pacman::animate()
 {
 	sprite.setScale(0.06f, 0.06f);
 
 	auto curr_pos = get_position();
-	curr_pos.y += 16.0f;
-	curr_pos.x += 13.0f;
+	curr_pos.y += 96.0f;
+	curr_pos.x +=55.0f;
 	sprite.setPosition(curr_pos);
 
 	auto pacman_center_x = (sprite.getTextureRect().left + sprite.getTextureRect().width) / 2;
@@ -124,17 +122,17 @@ void Pacman::animate()
 	};
 	if (pacman_animation_clock.getElapsedTime().asSeconds() > 0.2f)
 	{
-		if (show1_rate)
-		{
-			sprite.setTexture(pacman1);
-			show1_rate = false;
-		}
-		else
-		{
-			show1_rate = true;
-			sprite.setTexture(pacman2);
-		}
-
-		pacman_animation_clock.restart();
+	  if (show1_rate)
+	    {
+	      sprite.setTexture(pacman1);
+	      show1_rate = false;
+	    }
+	  else
+	    {
+	      show1_rate = true;
+	      sprite.setTexture(pacman2);
+	    }
+	  
+	  pacman_animation_clock.restart();
 	}
 }

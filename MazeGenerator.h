@@ -31,23 +31,25 @@ private:
 	map<int, Vector2i> teleports;
 	void generate_teleports(vector<string>& maze);
 public:
-	MazeGenerator()
-	{
-		maze = new int*[height];
-		for (int i = 0; i < height; ++i)
-			maze[i] = new int[width];
+  MazeGenerator()
+  {
+    maze = new int*[height];
+    for (int i = 0; i < height; ++i)
+      maze[i] = new int[width];
+    
+  }
+  ~MazeGenerator()
+  {
+	  for (int i = 0; i < height; ++i) 
+		  delete[] maze[i];
+		
+	  delete[] maze;
+  }
 
-	}
-	~MazeGenerator()
-	{
-		for (int i = 0; i < height; ++i) 
-			delete[] maze[i];
-
-		delete[] maze;
-	}
-
-	vector<string> get_maze();
-	map<int,Vector2i> get_teleports() { return teleports; }
+  vector<string> get_maze();
+  map<int,Vector2i> get_teleports() { return teleports; }
+  //i know it's shit
+  Vector2f get_center(){ return Vector2f((get_maze()[0].size()/2)*32,(get_maze().size()/2)*32);}
 };
 #endif //MAZE_GENERATOR_H
 

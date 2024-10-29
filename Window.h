@@ -49,10 +49,10 @@ class Window
 	bool pacman_is_dead = false;
 	bool victory = false;
 
-	const int win_height = 580;
-	const int win_width = 1280;
-	const float view_center_x = 1200.0f;
-	const float view_center_y = 220.0f;
+	const int win_height = 700;
+	const int win_width = 720;
+	const float view_center_x = 640.0f;
+	const float view_center_y = 640.0f;
 	const float element_size = 32.0f;
 	int score_to_win;
 	
@@ -66,7 +66,7 @@ class Window
 	void add_ghosts();
 	void process_ghosts();
 	void process_teleports();
-	void teleport_object(Character* ch, int port_id,const Vector2f& port_pos);
+	void teleport_object(Character* ch);
 
 	void generate_ghosts();
 

@@ -3,7 +3,7 @@
 Render::Window::Window()
 {
     win = new RenderWindow(VideoMode(win_width, win_height), "pacman", sf::Style::Titlebar | sf::Style::Close);
-    win->setFramerateLimit(20);
+    win->setFramerateLimit(60);
     set_icon();
 
     view = new View();
@@ -12,9 +12,11 @@ Render::Window::Window()
     view->zoom(2.0f);
     maze = maze_gen.get_maze();
 
-    man = new Pacman(maze);
-
+    man = new Pacman(maze,maze_gen.get_center());
+    
+    
     score_to_win = compute_score_to_win();
+    cout<<score_to_win<<std::endl;
     background.openFromMemory(background_ogg,background_ogg_len);
     background.setLoop(true);
     background.setVolume(70);
@@ -45,7 +47,7 @@ void Render::Window::generate_ghosts()
     {
         Clock* clock = new Clock();
         walkers_clocks.push_back(clock);
-    }
+	}
 }
 void Render::Window::process_ghosts()
 {
@@ -54,8 +56,8 @@ void Render::Window::process_ghosts()
         walkers[i]->run(maze, walkers_clocks[i],man->get_position());
         if (walkers[i]->does_intersects_pacman(man->get_position()))
         {
-            man->get_back_to_start();
-            man->decrease_health();
+	  man->get_back_to_start();
+          man->decrease_health();
         }
     }
 }
@@ -118,12 +120,17 @@ void Render::Window::run()
         if (game_started)
         {
             if (!pacman_is_dead)
+	      {
                 draw_man();
 
-            text_drawer.draw_score(*win,man->get_score());
-            draw_health();
-            draw_ghosts();
-
+		if(!victory)
+		  {
+		    text_drawer.draw_score(*win,man->get_score());
+		    draw_health();
+		  }
+	      }
+	    draw_ghosts();
+	    
             if (pacman_is_dead)
                 text_drawer.draw_death_title(*win);
 
@@ -144,6 +151,8 @@ void Render::Window::run()
 }
 void Render::Window::draw_maze()
 {
+  const float y_offset = 80.0f;
+  const float x_offset = 40.0f;
     for (int y = 0; y < maze.size(); y++)
     {
         auto line = maze[y];
@@ -155,10 +164,14 @@ void Render::Window::draw_maze()
                 {
                     RectangleShape wall;
                     wall.setSize(Vector2f(element_size, element_size));
-                    wall.setPosition(x* element_size, y* element_size);
+                    wall.setPosition((x* element_size)+x_offset, (y* element_size)+y_offset);
                     wall.setOutlineColor(Color(101,101,101,255));
                     wall.setFillColor(Color(101,101,101,255));
                     win->draw(wall);
+		    if(x == 0 and y == 0)
+		      {
+			cout<<(y*element_size)+y_offset<<endl;
+		      }
                 }
                 break;
                 case char(MazeGenerator::pelletChar):
@@ -168,9 +181,9 @@ void Render::Window::draw_maze()
                     pellet.setRadius(r-2);
 
                     auto offset = element_size / 4;
-                    pellet.setPosition(x * element_size+ offset+2 , y * element_size+ offset+2);
+                    pellet.setPosition((x * element_size+ offset+2)+x_offset, (y * element_size+ offset+2)+y_offset);
                     pellet.setFillColor(Color(255, 226, 0,255));
-                    draw_floor(Vector2f(x * element_size, y * element_size));
+                    draw_floor(Vector2f((x * element_size)+x_offset, (y * element_size)+y_offset));
                     win->draw(pellet);                }
                 break;
                 case char(MazeGenerator::wumpaChar):
@@ -179,15 +192,17 @@ void Render::Window::draw_maze()
                     cherry.setRadius(element_size / 4);
 
                     auto offset = element_size / 4;
-                    cherry.setPosition(x * element_size + offset, y * element_size + offset);
+                    cherry.setPosition((x * element_size + offset)+x_offset, (y * element_size + offset)+y_offset);
                     cherry.setFillColor(Color::Red);
 
-                    draw_floor(Vector2f(x * element_size, y * element_size));
+                    draw_floor(Vector2f((x * element_size)+x_offset, (y * element_size)+y_offset));
                     win->draw(cherry);
                 };
                 break;
                 default:
-                    draw_floor(Vector2f(x * element_size, y * element_size));
+		  {
+		    draw_floor(Vector2f((x * element_size)+x_offset, (y * element_size)+y_offset));
+		  }
                     break;
             };
         }
@@ -203,16 +218,14 @@ void Render::Window::draw_floor(const Vector2f& pos)
     RectangleShape floor;
     floor.setSize(Vector2f(element_size, element_size));
     floor.setPosition(pos.x, pos.y);
-    //floor.setFillColor(Color(180,180,180,255));
     floor.setFillColor(Color::Black);
-    //floor.setFillColor(Color::White);
     win->draw(floor);
 }
 
 void Render::Window::draw_health()
 {
     text_drawer.draw_health(*win);
-    Vector2f start_pos(2030.0f, -280.0f);
+    Vector2f start_pos(640.0f, -90.0f);
 
     auto draw = [&](const Texture& texture)
     {
@@ -245,61 +258,31 @@ void Render::Window::draw_ghosts()
 }
 void Render::Window::process_teleports()
 {
-    for (auto& port : maze_gen.get_teleports())
+  teleport_object(man);
+  for(auto& w:walkers)
     {
-        auto port_pos = Vector2f(port.second.x * element_size, port.second.y * element_size);
-        teleport_object(man, port.first, port_pos);
-       
-        for (auto& walker : walkers)
-            teleport_object(walker, port.first, port_pos);
+      teleport_object(w);
     }
 }
-void Render::Window::teleport_object(Character* ch, int port_id, const Vector2f& port_pos)
+void Render::Window::teleport_object(Character* ch)
 {
-    if (ch->get_position() == port_pos)
+  
+  if(ch->get_position().y-32 < 0)
     {
-        Vector2i pos_to_go;
-        int new_dir;
-        if (port_id == 0)
-        {
-            pos_to_go = maze_gen.get_teleports()[1];
-            new_dir = 0;
+      ch->set_position(Vector2f(ch->get_position().x,1120));
+    }
+  if(ch->get_position().x-32 < 0)
+    {
+      ch->set_position(Vector2f(1120,ch->get_position().y));
+    }
 
-            pos_to_go.x *= element_size;
-            pos_to_go.y *= element_size;
-
-            pos_to_go.x -= element_size;
-        }
-        if (port_id == 1)
-        {
-            pos_to_go = maze_gen.get_teleports()[0];
-            new_dir = 1;
-            pos_to_go.x *= element_size;
-            pos_to_go.y *= element_size;
-
-            pos_to_go.x += element_size;
-        }
-        if (port_id == 2)
-        {
-            pos_to_go = maze_gen.get_teleports()[3];
-            pos_to_go.x *= element_size;
-            pos_to_go.y *= element_size;
-            new_dir = 3;
-
-            pos_to_go.y -= element_size;
-        }
-        if (port_id == 3)
-        {
-            pos_to_go = maze_gen.get_teleports()[2];
-            pos_to_go.x *= element_size;
-            pos_to_go.y *= element_size;
-            new_dir = 2;
-
-            pos_to_go.y += element_size;
-        }
-
-        ch->set_direction((Character::Dir)new_dir);
-        ch->set_position(Vector2f(pos_to_go));
+  if(ch->get_position().y+32 > 1152)
+    {
+      ch->set_position(Vector2f(ch->get_position().x,32));
+    }
+  if(ch->get_position().x+32 > 1152)
+    {
+      ch->set_position(Vector2f(32,ch->get_position().y));
     }
 }
 void Render::Window::add_ghosts()
@@ -338,7 +321,8 @@ void Render::Window::restart()
     generate_ghosts();
 
     delete man;
-    man = new Pacman(maze);
+    
+    man = new Pacman(maze,maze_gen.get_center());
     pacman_is_dead = false;
     game_started = false;
     score_to_win = compute_score_to_win();

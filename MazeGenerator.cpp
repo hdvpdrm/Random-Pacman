@@ -36,11 +36,11 @@ void MazeGenerator::recursion(int r, int c)
             if (maze[r - 2][c] != 0) {
                 maze[r - 2][c] = 0;
                 maze[r - 1][c] = 0;
-		if(c-1 != 0)
-		  {
-		maze[r][c-1] = 0;
-                maze[r][c-1] = 0;
-		  }
+		//if(c-1 != 0)
+		//{
+		    //		    maze[r][c-1] = 0;
+		    //		    maze[r][c-1] = 0;
+		//}
                 recursion(r - 2, c);
             }
             break;
@@ -52,11 +52,11 @@ void MazeGenerator::recursion(int r, int c)
             if (maze[r][c + 2] != 0) {
                 maze[r][c + 2] = 0;
                 maze[r][c + 1] = 0;
-		if(r+2 != width)
-		  {
-		maze[r+1][c] = 0;
-		maze[r+1][c] = 0;
-		  }
+		//		if(r+1 < height)
+		//{
+		//  maze[r+1][c] = 0;
+		//	    maze[r+1][c] = 0;
+		//}
                 recursion(r, c + 2);
             }
             break;
@@ -107,14 +107,18 @@ void MazeGenerator::generate()
 vector<string>  MazeGenerator::get_maze()
 {
     generate();
-
+    int pellet_counter = 0;
+    
     string m;
     auto init = [&](int i, int j)
     {
         if (i == 1 && j == 1)
             m += char(wumpaChar);
         else if (maze[i][j] == 0)
+	  {
             m += char(pelletChar);
+	    ++pellet_counter;
+	  }
         else	 
             m += char(mazeChar);
     };
@@ -148,6 +152,14 @@ vector<string>  MazeGenerator::get_maze()
 
     auto splitted = split(m);
     generate_teleports(splitted);
+
+    auto center_x = splitted[0].size()/2;
+    auto center_y = splitted.size()/2;
+    splitted[center_y][center_x] = openChar;
+    splitted[center_y][center_x-1] = openChar;
+    splitted[center_y][center_x+1] = openChar;
+    splitted[center_y+1][center_x] = openChar;
+    splitted[center_y-1][center_x] = openChar;
     return splitted;
 }
 void MazeGenerator::generate_teleports(vector<string>& maze)
